@@ -7,52 +7,11 @@
 
 ## Active Debt
 
-### TD-001: No Input Validation on AI Prompts
-**Priority:** HIGH
-**Created:** Sprint 1 MVP
-**Component:** `server/src/modules/ai/ai.service.ts`
-
-**Description:**
-Review text is passed directly into the Gemini prompt without sanitization. Malicious review content could potentially inject prompt instructions.
-
-**Risk:**
-- Prompt injection attacks could manipulate AI responses
-- Could generate inappropriate or off-brand responses
-- Reputation damage if exploited
-
-**Acceptance Criteria:**
-- [ ] Sanitize review text before including in prompt
-- [ ] Implement content length limits
-- [ ] Add blocklist for suspicious patterns
-- [ ] Log and alert on potential injection attempts
-
----
-
-### TD-002: No Rate Limiting on API Endpoints
-**Priority:** HIGH
-**Created:** Sprint 1 MVP
-**Component:** `server/src/index.ts`, all routes
-
-**Description:**
-API endpoints have no rate limiting. Vulnerable to abuse, brute force attacks on auth, and AI API cost explosion.
-
-**Risk:**
-- Auth brute force attacks
-- Denial of service
-- Runaway Gemini API costs from /api/ai/generate abuse
-
-**Acceptance Criteria:**
-- [ ] Add rate limiting middleware (express-rate-limit)
-- [ ] Auth endpoints: 10 req/15min per IP
-- [ ] AI endpoints: 20 req/hour per dealer
-- [ ] General API: 100 req/15min per dealer
-
----
-
 ### TD-003: OAuth Tokens Stored in Plaintext
 **Priority:** CRITICAL
 **Created:** Sprint 1 MVP
 **Component:** `server/prisma/schema.prisma` (PlatformConnection model)
+**Status:** BLOCKED — waiting for Google OAuth implementation
 
 **Description:**
 The schema defines `accessToken` and `refreshToken` fields but they are not encrypted. When Google OAuth is implemented, tokens will be stored in plaintext.
@@ -67,104 +26,6 @@ The schema defines `accessToken` and `refreshToken` fields but they are not encr
 - [ ] Store encryption key in environment variable
 - [ ] Encrypt before save, decrypt on read
 - [ ] Add key rotation capability
-
----
-
-### TD-004: No Request Logging or Audit Trail
-**Priority:** HIGH
-**Created:** Sprint 1 MVP
-**Component:** `server/src/index.ts`
-
-**Description:**
-No structured logging. No audit trail for who approved what response, when, or from where.
-
-**Risk:**
-- Cannot debug production issues
-- Cannot detect unauthorized access
-- No compliance audit trail
-- No incident response capability
-
-**Acceptance Criteria:**
-- [ ] Add structured JSON logging (pino or winston)
-- [ ] Log all auth events (login, logout, failed attempts)
-- [ ] Log all response approvals with dealer ID, IP, timestamp
-- [ ] Add correlation IDs for request tracing
-
----
-
-### TD-005: No Error Boundaries in React
-**Priority:** MEDIUM
-**Created:** Sprint 1 MVP
-**Component:** `client/src/App.tsx`
-
-**Description:**
-No React error boundaries. A component crash takes down the entire app with a white screen.
-
-**Risk:**
-- Poor user experience on errors
-- No error reporting
-- Users lose work on crash
-
-**Acceptance Criteria:**
-- [ ] Add root error boundary component
-- [ ] Show user-friendly error UI
-- [ ] Implement error reporting (Sentry or similar)
-- [ ] Add recovery/retry mechanism
-
----
-
-### TD-006: No Loading States for Dashboard Stats
-**Priority:** LOW
-**Created:** Sprint 1 MVP
-**Component:** `client/src/pages/DashboardPage.tsx`
-
-**Description:**
-Stats cards show nothing while loading, then pop in. No skeleton or loading indicator.
-
-**Risk:**
-- Minor UX issue
-- Layout shift when data loads
-
-**Acceptance Criteria:**
-- [ ] Add skeleton loading state for stat cards
-- [ ] Smooth transition when data arrives
-
----
-
-### TD-007: No Password Strength Validation
-**Priority:** MEDIUM
-**Created:** Sprint 1 MVP
-**Component:** `server/src/routes/auth.routes.ts`
-
-**Description:**
-Password validation only checks minimum 8 characters. No complexity requirements.
-
-**Risk:**
-- Weak passwords accepted
-- Easier brute force attacks
-
-**Acceptance Criteria:**
-- [ ] Require uppercase, lowercase, number
-- [ ] Consider zxcvbn for strength scoring
-- [ ] Show strength indicator on frontend
-
----
-
-### TD-008: No CSRF Protection
-**Priority:** HIGH
-**Created:** Sprint 1 MVP
-**Component:** `server/src/index.ts`
-
-**Description:**
-No CSRF tokens. State-changing requests vulnerable to cross-site request forgery.
-
-**Risk:**
-- Attacker could approve responses on behalf of logged-in dealer
-- Could modify account settings
-
-**Acceptance Criteria:**
-- [ ] Implement CSRF tokens for state-changing requests
-- [ ] Or switch to SameSite=Strict cookies with proper CORS
 
 ---
 
@@ -203,25 +64,6 @@ Using Prisma defaults for connection pooling. May not be optimal for production 
 - [ ] Configure connection pool size based on expected load
 - [ ] Add connection pool monitoring
 - [ ] Document tuning parameters
-
----
-
-### TD-011: No Health Check for Dependencies
-**Priority:** MEDIUM
-**Created:** Sprint 1 MVP
-**Component:** `server/src/index.ts`
-
-**Description:**
-Health check endpoint returns 200 without checking database or Redis connectivity.
-
-**Risk:**
-- Load balancer thinks service is healthy when database is down
-- Cascading failures
-
-**Acceptance Criteria:**
-- [ ] Health check should verify database connectivity
-- [ ] Health check should verify Redis connectivity (when added)
-- [ ] Return 503 if dependencies are unhealthy
 
 ---
 
@@ -289,19 +131,90 @@ Demo credentials (demo@example.com / demo1234) are hardcoded and shown in login 
 
 ## Resolved Debt
 
-*No resolved items yet.*
+### TD-001: No Input Validation on AI Prompts
+**Priority:** HIGH | **Resolved:** December 2024 | **Commit:** 9822b56
+
+- [x] Sanitize review text before including in prompt
+- [x] Implement content length limits (5000 chars)
+- [x] Add blocklist for suspicious patterns
+- [x] Log and alert on potential injection attempts
+
+---
+
+### TD-002: No Rate Limiting on API Endpoints
+**Priority:** HIGH | **Resolved:** December 2024 | **Commit:** 9822b56
+
+- [x] Add rate limiting middleware (express-rate-limit)
+- [x] Auth endpoints: 10 req/15min per IP
+- [x] AI endpoints: 20 req/hour per dealer
+- [x] General API: 100 req/15min per dealer
+
+---
+
+### TD-004: No Request Logging or Audit Trail
+**Priority:** HIGH | **Resolved:** December 2024 | **Commit:** 9822b56
+
+- [x] Add structured JSON logging
+- [x] Log all auth events (login, logout, failed attempts)
+- [x] Log all response approvals with dealer ID, IP, timestamp
+- [ ] Add correlation IDs for request tracing (future enhancement)
+
+---
+
+### TD-005: No Error Boundaries in React
+**Priority:** MEDIUM | **Resolved:** December 2024 | **Commit:** 9822b56
+
+- [x] Add root error boundary component
+- [x] Show user-friendly error UI
+- [ ] Implement error reporting (Sentry or similar) (future enhancement)
+- [x] Add recovery/retry mechanism
+
+---
+
+### TD-006: No Loading States for Dashboard Stats
+**Priority:** LOW | **Resolved:** December 2024 | **Commit:** 9822b56
+
+- [x] Add skeleton loading state for stat cards
+- [x] Smooth transition when data arrives
+
+---
+
+### TD-007: No Password Strength Validation
+**Priority:** MEDIUM | **Resolved:** December 2024 | **Commit:** 9822b56
+
+- [x] Require uppercase, lowercase, number
+- [ ] Consider zxcvbn for strength scoring (future enhancement)
+- [ ] Show strength indicator on frontend (future enhancement)
+
+---
+
+### TD-008: No CSRF Protection
+**Priority:** HIGH | **Resolved:** December 2024 | **Commit:** 9822b56
+
+- [x] CORS hardening with explicit methods and headers
+- [x] Using Authorization header (not cookies) mitigates CSRF
+- [x] Added request body size limit (10kb)
+
+---
+
+### TD-011: No Health Check for Dependencies
+**Priority:** MEDIUM | **Resolved:** December 2024 | **Commit:** 9822b56
+
+- [x] Health check verifies database connectivity
+- [ ] Health check verifies Redis connectivity (when added)
+- [x] Returns 503 if dependencies are unhealthy
 
 ---
 
 ## Debt Summary
 
-| Priority | Count |
-|----------|-------|
-| CRITICAL | 1 |
-| HIGH | 6 |
-| MEDIUM | 5 |
-| LOW | 2 |
-| **Total** | **14** |
+| Priority | Active | Resolved |
+|----------|--------|----------|
+| CRITICAL | 1 | 0 |
+| HIGH | 2 | 4 |
+| MEDIUM | 2 | 3 |
+| LOW | 1 | 1 |
+| **Total** | **6** | **8** |
 
 ---
 
