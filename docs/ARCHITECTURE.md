@@ -1,10 +1,32 @@
-# ReplyEngine — Technical Architecture Plan
+# Sentri — Technical Architecture Plan
 
-**Product:** AI Review Response Automation
-**Version:** 1.0
+**Product:** Sentri — AI Review Response Automation
+**Tagline:** "Your reputation, on guard."
+**Version:** 1.1
 **Date:** December 2024
-**Contributors:** Linus Torvalds (Architecture), Rob Pike (Backend), Dan Abramov (Frontend), Martin Kleppmann (Database), Kelsey Hightower (DevOps), Bruce Schneier (Security), Luke Wroblewski (Mobile)
+**Contributors:** Linus Torvalds (Architecture), Rob Pike (Backend), Dan Abramov (Frontend), Martin Kleppmann (Database), Kelsey Hightower (DevOps), Bruce Schneier (Security), Luke Wroblewski (Mobile), Marty Neumeier (Brand)
 **Approved by:** Andy Grove (Project Manager)
+
+---
+
+## Brand Identity
+
+> **Sentri is the ONLY review response platform that executes automatically — not just monitors.**
+
+See [BRAND-GUIDELINES.md](BRAND-GUIDELINES.md) for complete brand documentation.
+
+### Quick Reference
+
+| Element | Value |
+|---------|-------|
+| **Name** | Sentri (always capitalized) |
+| **Pronunciation** | SEN-tree |
+| **Primary Color** | Sentri Blue `#1E3A5F` |
+| **Secondary Color** | Guardian Navy `#0F2340` |
+| **Font** | Inter |
+| **Domain** | sentri.io |
+| **API Domain** | api.sentri.io |
+| **App Domain** | app.sentri.io |
 
 ---
 
@@ -761,6 +783,74 @@ Write only the response text. Do not include any preamble or explanation.`;
 | HTTP Client | Axios |
 | Forms | React Hook Form |
 | Validation | Zod |
+| Font | Inter (Google Fonts) |
+
+### Brand Integration (Tailwind Config)
+
+```javascript
+// tailwind.config.js
+
+module.exports = {
+  content: ['./src/**/*.{js,ts,jsx,tsx}'],
+  theme: {
+    extend: {
+      colors: {
+        // Primary Brand Colors
+        'sentri-blue': '#1E3A5F',
+        'guardian-navy': '#0F2340',
+
+        // Status Colors
+        'success': '#10B981',
+        'warning': '#F59E0B',
+        'alert': '#EF4444',
+
+        // Neutral
+        'neutral': '#6B7280',
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
+      },
+    },
+  },
+  plugins: [],
+}
+```
+
+### CSS Variables (Global)
+
+```css
+/* src/index.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Brand Colors */
+  --sentri-blue: #1E3A5F;
+  --guardian-navy: #0F2340;
+  --alert-white: #FFFFFF;
+
+  /* Status Colors */
+  --success-green: #10B981;
+  --warning-amber: #F59E0B;
+  --alert-red: #EF4444;
+  --neutral-gray: #6B7280;
+
+  /* Typography */
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+```
 
 ### Key Component: Review Card
 
@@ -1159,12 +1249,12 @@ CREATE INDEX idx_connections_active ON platform_connections(is_active) WHERE is_
 # Google
 GOOGLE_CLIENT_ID=xxx
 GOOGLE_CLIENT_SECRET=xxx
-GOOGLE_REDIRECT_URI=https://app.replyengine.com/oauth/google/callback
+GOOGLE_REDIRECT_URI=https://app.sentri.io/oauth/google/callback
 
 # Facebook
 FACEBOOK_APP_ID=xxx
 FACEBOOK_APP_SECRET=xxx
-FACEBOOK_REDIRECT_URI=https://app.replyengine.com/oauth/facebook/callback
+FACEBOOK_REDIRECT_URI=https://app.sentri.io/oauth/facebook/callback
 
 # DealerRater (Phase 2)
 DEALERRATER_API_HOST=services.dealerrater.com
@@ -1439,7 +1529,7 @@ jobs:
 # .env.example
 
 # Database
-DATABASE_URL=postgresql://user:pass@host:5432/replyengine
+DATABASE_URL=postgresql://user:pass@host:5432/sentri
 
 # Redis
 REDIS_URL=redis://host:6379
@@ -1473,7 +1563,8 @@ STRIPE_SECRET_KEY=
 STRIPE_WEBHOOK_SECRET=
 
 # App
-APP_URL=https://app.replyengine.com
+APP_URL=https://app.sentri.io
+API_URL=https://api.sentri.io
 NODE_ENV=production
 ```
 
@@ -1490,7 +1581,7 @@ export const logger = pino({
     ? { target: 'pino-pretty' }
     : undefined,
   base: {
-    service: 'replyengine',
+    service: 'sentri',
     env: process.env.NODE_ENV
   }
 });
@@ -1513,7 +1604,7 @@ logger.error({ err, reviewId }, 'Failed to post response');
 ### REST API Endpoints
 
 ```
-BASE URL: https://api.replyengine.com/v1
+BASE URL: https://api.sentri.io/v1
 
 AUTHENTICATION
 POST   /auth/login              # Email/password login

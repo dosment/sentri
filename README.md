@@ -1,6 +1,12 @@
 # Sentri
 
+> **"Your reputation, on guard."**
+
 AI-powered review response automation for automotive dealerships.
+
+## The Onliness Statement
+
+**Sentri is the ONLY review response platform that executes automatically — not just monitors.**
 
 ## Overview
 
@@ -52,6 +58,19 @@ npm run dev
 - [Architecture](docs/ARCHITECTURE.md)
 - [API Specification](docs/API.md)
 - [Platform Integrations](docs/PLATFORMS.md)
+- [Brand Guidelines](docs/BRAND-GUIDELINES.md)
+- [Edge Cases & Gaps](docs/EDGE-CASES-AND-GAPS.md)
+
+## Brand
+
+| Element | Value |
+|---------|-------|
+| **Name** | Sentri |
+| **Tagline** | "Your reputation, on guard." |
+| **Primary Color** | `#1E3A5F` (Sentri Blue) |
+| **Font** | Inter |
+
+See [Brand Guidelines](docs/BRAND-GUIDELINES.md) for complete brand documentation.
 
 ## License
 

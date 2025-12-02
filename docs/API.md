@@ -1,5 +1,7 @@
 # Sentri API Specification
 
+> **"Your reputation, on guard."**
+
 ## Base URL
 
 ```
