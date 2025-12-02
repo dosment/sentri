@@ -54,12 +54,11 @@ npm run dev
 
 ## Documentation
 
-- [Business Plan](docs/BUSINESS-PLAN.md)
-- [Architecture](docs/ARCHITECTURE.md)
-- [API Specification](docs/API.md)
-- [Platform Integrations](docs/PLATFORMS.md)
-- [Brand Guidelines](docs/BRAND-GUIDELINES.md)
-- [Edge Cases & Gaps](docs/EDGE-CASES-AND-GAPS.md)
+- [Business Plan](docs/BUSINESS-PLAN.md) — Market, pricing, GTM strategy
+- [Architecture](docs/ARCHITECTURE.md) — Technical design, database, API
+- [Brand Guidelines](docs/BRAND-GUIDELINES.md) — Identity, voice, visual
+- [Platforms](docs/PLATFORMS.md) — API integration details
+- [Edge Cases](docs/EDGE-CASES.md) — Known gaps and considerations
 
 ## Brand
 
