@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { ReviewCard } from './ReviewCard'
 import { Button } from '@/components/ui/Button'
+import { ReviewCardSkeleton } from '@/components/ui/Skeleton'
 import { getReviews, type Review, type ReviewStatus } from '@/api/reviews'
 
 type FilterStatus = ReviewStatus | 'ALL'
@@ -36,8 +37,22 @@ export function ReviewList() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sentri-blue"></div>
+      <div>
+        <div className="flex space-x-2 mb-6">
+          {filters.map(({ label, value }) => (
+            <Button
+              key={value}
+              variant={filter === value ? 'primary' : 'secondary'}
+              size="sm"
+              disabled
+            >
+              {label}
+            </Button>
+          ))}
+        </div>
+        <ReviewCardSkeleton />
+        <ReviewCardSkeleton />
+        <ReviewCardSkeleton />
       </div>
     )
   }

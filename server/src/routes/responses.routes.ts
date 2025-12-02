@@ -2,6 +2,7 @@ import { Router, Response, NextFunction } from 'express';
 import { z } from 'zod';
 import * as responsesService from '../modules/responses/responses.service.js';
 import { authenticate, AuthRequest } from '../middleware/auth.middleware.js';
+import { logger, AuditEvents } from '../lib/logger.js';
 
 const router = Router();
 
@@ -32,6 +33,13 @@ router.patch('/:id', async (req: AuthRequest, res: Response, next: NextFunction)
       req.dealer!.id,
       data
     );
+
+    logger.audit(AuditEvents.RESPONSE_EDITED, {
+      responseId: req.params.id,
+      dealerId: req.dealer!.id,
+      dealerEmail: req.dealer!.email,
+    });
+
     res.json(response);
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -53,6 +61,14 @@ router.post('/:id/approve', async (req: AuthRequest, res: Response, next: NextFu
       req.dealer!.id,
       req.dealer!.email
     );
+
+    logger.audit(AuditEvents.RESPONSE_APPROVED, {
+      responseId: req.params.id,
+      reviewId: response.reviewId,
+      dealerId: req.dealer!.id,
+      dealerEmail: req.dealer!.email,
+    });
+
     res.json(response);
   } catch (error) {
     if (error instanceof Error) {

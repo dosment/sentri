@@ -2,6 +2,47 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { env } from '../../config/env.js';
 import { prisma } from '../../config/database.js';
 
+const MAX_REVIEW_LENGTH = 5000;
+const MAX_NAME_LENGTH = 200;
+
+// Patterns that might indicate prompt injection attempts
+const SUSPICIOUS_PATTERNS = [
+  /ignore\s+(all\s+)?(previous|above|prior)\s+(instructions?|prompts?)/i,
+  /disregard\s+(all\s+)?(previous|above|prior)/i,
+  /forget\s+(everything|all|what)/i,
+  /you\s+are\s+now/i,
+  /new\s+instructions?:/i,
+  /system\s*:/i,
+  /\[system\]/i,
+  /assistant\s*:/i,
+  /<\/?(?:system|assistant|user)>/i,
+];
+
+function sanitizeInput(text: string, maxLength: number): string {
+  // Truncate to max length
+  let sanitized = text.slice(0, maxLength);
+
+  // Remove null bytes and other control characters (keep newlines and tabs)
+  sanitized = sanitized.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
+
+  // Escape quotes to prevent breaking out of the quoted context
+  sanitized = sanitized.replace(/"/g, '\\"');
+
+  return sanitized.trim();
+}
+
+function detectPromptInjection(text: string): boolean {
+  return SUSPICIOUS_PATTERNS.some(pattern => pattern.test(text));
+}
+
+function logSuspiciousInput(reviewId: string, text: string): void {
+  console.warn('[SECURITY] Potential prompt injection detected', {
+    reviewId,
+    textPreview: text.slice(0, 100),
+    timestamp: new Date().toISOString(),
+  });
+}
+
 let genAI: GoogleGenerativeAI | null = null;
 
 function getClient(): GoogleGenerativeAI {
@@ -37,7 +78,23 @@ Guidelines:
 
 Output only the response text, nothing else.`;
 
-export async function generateResponse(input: GenerateResponseInput): Promise<string> {
+export async function generateResponse(
+  input: GenerateResponseInput,
+  reviewId?: string
+): Promise<string> {
+  // Sanitize all user-provided inputs
+  const sanitizedDealerName = sanitizeInput(input.dealerName, MAX_NAME_LENGTH);
+  const sanitizedReviewerName = sanitizeInput(input.reviewerName, MAX_NAME_LENGTH);
+  const sanitizedReviewText = sanitizeInput(input.reviewText, MAX_REVIEW_LENGTH);
+
+  // Check for prompt injection attempts
+  if (detectPromptInjection(input.reviewText)) {
+    if (reviewId) {
+      logSuspiciousInput(reviewId, input.reviewText);
+    }
+    // Still process but flag for review - don't block legitimate reviews that happen to match patterns
+  }
+
   const client = getClient();
   const model = client.getGenerativeModel({
     model: 'gemini-1.5-flash',
@@ -54,12 +111,12 @@ export async function generateResponse(input: GenerateResponseInput): Promise<st
 
   const prompt = `Generate a response for this review:
 
-Dealership: ${input.dealerName}
-Reviewer: ${input.reviewerName}
+Dealership: ${sanitizedDealerName}
+Reviewer: ${sanitizedReviewerName}
 ${ratingContext}
 
 Review text:
-"${input.reviewText}"${voiceContext}`;
+"${sanitizedReviewText}"${voiceContext}`;
 
   const result = await model.generateContent(prompt);
   const response = result.response;
@@ -86,13 +143,16 @@ export async function generateResponseForReview(reviewId: string, dealerId: stri
     throw new Error('Review not found');
   }
 
-  const responseText = await generateResponse({
-    dealerName: review.dealer.name,
-    reviewerName: review.reviewerName,
-    rating: review.rating,
-    reviewText: review.reviewText,
-    voiceProfile: review.dealer.voiceProfile,
-  });
+  const responseText = await generateResponse(
+    {
+      dealerName: review.dealer.name,
+      reviewerName: review.reviewerName,
+      rating: review.rating,
+      reviewText: review.reviewText,
+      voiceProfile: review.dealer.voiceProfile,
+    },
+    reviewId
+  );
 
   return responseText;
 }

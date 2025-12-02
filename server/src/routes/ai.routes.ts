@@ -3,6 +3,7 @@ import { z } from 'zod';
 import * as aiService from '../modules/ai/ai.service.js';
 import * as responsesService from '../modules/responses/responses.service.js';
 import { authenticate, AuthRequest } from '../middleware/auth.middleware.js';
+import { logger, AuditEvents } from '../lib/logger.js';
 
 const router = Router();
 
@@ -26,6 +27,12 @@ router.post('/generate', async (req: AuthRequest, res: Response, next: NextFunct
       req.dealer!.id,
       generatedText
     );
+
+    logger.audit(AuditEvents.RESPONSE_GENERATED, {
+      responseId: response.id,
+      reviewId,
+      dealerId: req.dealer!.id,
+    });
 
     res.json(response);
   } catch (error) {
@@ -64,6 +71,13 @@ router.post('/regenerate/:responseId', async (req: AuthRequest, res: Response, n
       req.dealer!.id,
       generatedText
     );
+
+    logger.audit(AuditEvents.RESPONSE_GENERATED, {
+      responseId: response.id,
+      reviewId: existingResponse.reviewId,
+      dealerId: req.dealer!.id,
+      regenerated: true,
+    });
 
     res.json(response);
   } catch (error) {

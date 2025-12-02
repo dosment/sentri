@@ -170,7 +170,7 @@ export function ReviewCard({ review, onUpdate }: ReviewCardProps) {
             </Button>
           )}
           {review.response?.status === 'DRAFT' && !isEditing && (
-            <Button onClick={handleApprove} disabled={loading}>
+            <Button variant="success" onClick={handleApprove} disabled={loading}>
               {loading ? 'Approving...' : 'Approve'}
             </Button>
           )}

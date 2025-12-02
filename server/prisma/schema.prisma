@@ -45,8 +45,8 @@ model Review {
   id               String          @id @default(uuid())
   dealerId         String
   platform         Platform
-  platformReviewId String
-  reviewerName     String
+  platformReviewId String          @db.VarChar(500)
+  reviewerName     String          @db.VarChar(200)
   rating           Int?
   recommendation   Recommendation?
   reviewText       String
@@ -58,6 +58,8 @@ model Review {
   response Response?
 
   @@unique([platform, platformReviewId])
+  @@index([dealerId, status])
+  @@index([dealerId, reviewDate])
 }
 
 model Response {
@@ -75,6 +77,8 @@ model Response {
 
   review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
   dealer Dealer @relation(fields: [dealerId], references: [id], onDelete: Cascade)
+
+  @@index([dealerId, status])
 }
 
 enum Plan {
