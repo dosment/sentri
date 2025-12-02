@@ -1,0 +1,110 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Dealer {
+  id                   String   @id @default(uuid())
+  email                String   @unique
+  passwordHash         String?
+  name                 String
+  phone                String?
+  plan                 Plan     @default(STARTER)
+  voiceProfile         Json?
+  autoApproveThreshold Int      @default(4)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  platformConnections PlatformConnection[]
+  reviews             Review[]
+  responses           Response[]
+}
+
+model PlatformConnection {
+  id                String    @id @default(uuid())
+  dealerId          String
+  platform          Platform
+  platformAccountId String
+  accessToken       String
+  refreshToken      String?
+  tokenExpiresAt    DateTime?
+  isActive          Boolean   @default(true)
+  lastSyncAt        DateTime?
+  createdAt         DateTime  @default(now())
+
+  dealer Dealer @relation(fields: [dealerId], references: [id], onDelete: Cascade)
+
+  @@unique([dealerId, platform])
+}
+
+model Review {
+  id               String          @id @default(uuid())
+  dealerId         String
+  platform         Platform
+  platformReviewId String
+  reviewerName     String
+  rating           Int?
+  recommendation   Recommendation?
+  reviewText       String
+  reviewDate       DateTime
+  status           ReviewStatus    @default(NEW)
+  createdAt        DateTime        @default(now())
+
+  dealer   Dealer    @relation(fields: [dealerId], references: [id], onDelete: Cascade)
+  response Response?
+
+  @@unique([platform, platformReviewId])
+}
+
+model Response {
+  id            String         @id @default(uuid())
+  reviewId      String         @unique
+  dealerId      String
+  generatedText String
+  finalText     String?
+  status        ResponseStatus @default(DRAFT)
+  approvedBy    String?
+  approvedAt    DateTime?
+  postedAt      DateTime?
+  postError     String?
+  createdAt     DateTime       @default(now())
+
+  review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  dealer Dealer @relation(fields: [dealerId], references: [id], onDelete: Cascade)
+}
+
+enum Plan {
+  STARTER
+  PROFESSIONAL
+  ENTERPRISE
+}
+
+enum Platform {
+  GOOGLE
+  FACEBOOK
+  DEALERRATER
+  YELP
+}
+
+enum ReviewStatus {
+  NEW
+  PENDING_RESPONSE
+  RESPONDED
+  IGNORED
+}
+
+enum ResponseStatus {
+  DRAFT
+  APPROVED
+  POSTED
+  FAILED
+}
+
+enum Recommendation {
+  RECOMMENDS
+  DOESNT_RECOMMEND
+}

@@ -48,3 +48,6 @@ prisma/*.db-journal
 *.seed
 *.pid.lock
 .cache/
+
+# TypeScript build info
+*.tsbuildinfo
