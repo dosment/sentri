@@ -129,6 +129,164 @@ Demo credentials (demo@example.com / demo1234) are hardcoded and shown in login 
 
 ---
 
+### TD-015: No Privacy Policy or Terms of Service
+**Priority:** CRITICAL
+**Created:** Team Review v2
+**Component:** Legal documentation (missing)
+**Owner:** Max Schrems (Privacy/Legal)
+**Status:** BLOCKING — required before pilot with real users
+
+**Description:**
+No legal documentation exists. Privacy Policy and Terms of Service are legally required before collecting real user data.
+
+**Risk:**
+- GDPR/CCPA violations
+- FTC enforcement action
+- Inability to onboard real customers
+- Potential lawsuits from data subjects
+
+**Acceptance Criteria:**
+- [ ] Draft Privacy Policy (disclose AI processing, data retention, third-party transfers)
+- [ ] Draft Terms of Service
+- [ ] Create Legitimate Interest Assessment for review data processing
+- [ ] Add CCPA "Do Not Sell" disclosure
+- [ ] Define data retention periods
+- [ ] Document Data Subject Access Request (DSAR) procedure
+
+---
+
+### TD-016: No Empty States in UI
+**Priority:** HIGH
+**Created:** Team Review v2
+**Component:** `client/src/pages/DashboardPage.tsx`, `client/src/components/reviews/ReviewList.tsx`
+**Owner:** Steve Jobs (UI/UX), Joanna Wiebe (Copy)
+
+**Description:**
+New dealers see blank pages when no reviews exist. No guidance on next steps.
+
+**Risk:**
+- User confusion and abandonment
+- Failed onboarding
+- Poor first impression
+
+**Acceptance Criteria:**
+- [ ] Add empty state to dashboard when no reviews
+- [ ] Include CTA to connect Google account
+- [ ] Add reassuring copy ("Once connected, we'll check for new reviews every hour")
+- [ ] Empty state for review list with actionable guidance
+
+---
+
+### TD-017: Mobile Touch Targets Too Small
+**Priority:** MEDIUM
+**Created:** Team Review v2
+**Component:** `client/src/components/ui/Button.tsx`
+**Owner:** Luke Wroblewski (Mobile)
+
+**Description:**
+Small button size (`px-3 py-1.5`) produces ~32px touch targets. Mobile best practice requires 44px minimum.
+
+**Risk:**
+- Poor mobile usability
+- Missed taps on Regenerate/Edit buttons
+- Frustrated mobile users
+
+**Acceptance Criteria:**
+- [ ] Increase sm button size to minimum 44px height
+- [ ] Test on real mobile devices
+- [ ] Audit all interactive elements for touch target compliance
+
+---
+
+### TD-018: No Onboarding Flow
+**Priority:** HIGH
+**Created:** Team Review v2
+**Component:** `client/src/pages/DashboardPage.tsx`
+**Owner:** Nick Mehta (Customer Success)
+
+**Description:**
+No guided onboarding after signup. Dealers must figure out next steps on their own.
+
+**Risk:**
+- Low activation rates
+- Dealers abandon before connecting Google
+- No measurement of onboarding completion
+
+**Acceptance Criteria:**
+- [ ] Add onboarding checklist component
+- [ ] Track completion of: account created, Google connected, first review viewed, first response approved
+- [ ] Show progress indicator
+- [ ] Trigger re-engagement if onboarding incomplete after 24/72 hours
+
+---
+
+### TD-019: No Customer Feedback Mechanism
+**Priority:** MEDIUM
+**Created:** Team Review v2
+**Component:** `client/src/components/reviews/ReviewCard.tsx`
+**Owner:** Jeff Bezos (Business Strategy)
+
+**Description:**
+No way for dealers to rate AI response quality. No feedback loop for improving AI.
+
+**Risk:**
+- AI quality drift goes undetected
+- No data for improvement
+- Churn signals missed
+
+**Acceptance Criteria:**
+- [ ] Add "Was this response helpful?" prompt after approval
+- [ ] Store feedback in database
+- [ ] Track approval rate and edit rate as health signals
+- [ ] Surface feedback for AI prompt tuning
+
+---
+
+### TD-020: Brand Assets Missing
+**Priority:** MEDIUM
+**Created:** Team Review v2
+**Component:** Repository root, `client/public/`
+**Owner:** Marty Neumeier (Brand Strategy)
+
+**Description:**
+No logo files, using default Vite favicon, no brand assets for marketing.
+
+**Risk:**
+- Unprofessional appearance
+- Can't create marketing materials
+- Brand inconsistency
+
+**Acceptance Criteria:**
+- [ ] Create wordmark logo (SVG, PNG)
+- [ ] Create icon mark (for small sizes)
+- [ ] Replace Vite favicon with Sentri icon
+- [ ] Add social media profile images
+- [ ] Create og-image for link previews
+
+---
+
+### TD-021: Generic Microcopy Throughout UI
+**Priority:** LOW
+**Created:** Team Review v2
+**Component:** Multiple client components
+**Owner:** Joanna Wiebe (Copywriting)
+
+**Description:**
+UI copy is functional but generic. "AI Response" triggers dealer skepticism. Loading states lack personality.
+
+**Risk:**
+- Reduced trust from "AI" labeling
+- Missed brand reinforcement opportunities
+- Generic SaaS feel
+
+**Acceptance Criteria:**
+- [ ] Change "AI Response" to "Draft Response"
+- [ ] Change "Generating..." to "Sentri is writing..."
+- [ ] Personalize dashboard header with dealer name
+- [ ] Update all microcopy per brand voice guidelines
+
+---
+
 ## Resolved Debt
 
 ### TD-001: No Input Validation on AI Prompts
@@ -210,11 +368,29 @@ Demo credentials (demo@example.com / demo1234) are hardcoded and shown in login 
 
 | Priority | Active | Resolved |
 |----------|--------|----------|
-| CRITICAL | 1 | 0 |
-| HIGH | 2 | 4 |
-| MEDIUM | 2 | 3 |
-| LOW | 1 | 1 |
-| **Total** | **6** | **8** |
+| CRITICAL | 2 | 0 |
+| HIGH | 4 | 4 |
+| MEDIUM | 5 | 3 |
+| LOW | 2 | 1 |
+| **Total** | **13** | **8** |
+
+### Active Debt by Category
+
+| Category | Items | Owners |
+|----------|-------|--------|
+| Legal/Compliance | TD-015 | Max Schrems |
+| Security | TD-003, TD-009 | Bruce Schneier |
+| Infrastructure | TD-010, TD-012, TD-013 | Kelsey Hightower, James Bach |
+| UX/UI | TD-016, TD-017, TD-018, TD-020, TD-021 | Steve Jobs, Luke, Nick, Marty N, Joanna |
+| Product | TD-019 | Jeff Bezos |
+| Cleanup | TD-014 | — |
+
+### Blocking Items
+
+| ID | Description | Blocks |
+|----|-------------|--------|
+| TD-015 | Privacy Policy / ToS | **Pilot with real users** |
+| TD-003 | Token encryption | Google OAuth implementation |
 
 ---
 
@@ -223,3 +399,13 @@ Demo credentials (demo@example.com / demo1234) are hardcoded and shown in login 
 - **Before each sprint:** Review active debt, identify blockers
 - **After shipping with shortcuts:** Update immediately
 - **Weekly:** Review HIGH/CRITICAL items with team
+
+---
+
+## Changelog
+
+| Date | Change |
+|------|--------|
+| Dec 2024 | Initial register with 14 items from MVP review |
+| Dec 2024 | Resolved 8 items (TD-001, 002, 004, 005, 006, 007, 008, 011) |
+| Dec 2024 | Added 7 items from Team Review v2 (TD-015 through TD-021) |
