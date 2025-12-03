@@ -126,7 +126,7 @@ Annual discount: 15% ($169, $254, $424)
 
 | Item | Monthly Cost |
 |------|--------------|
-| AI API (Claude) | $200-500 |
+| AI API (Gemini) | $200-500 |
 | Infrastructure | $100-200 |
 | Communications | $50-100 |
 | Misc | $50 |

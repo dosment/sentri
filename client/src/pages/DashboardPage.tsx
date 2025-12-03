@@ -25,8 +25,10 @@ export function DashboardPage({ dealer, onLogout }: DashboardPageProps) {
   return (
     <Layout dealerName={dealer.name} onLogout={onLogout}>
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Dashboard</h1>
-        <p className="text-gray-600">Manage your reviews and responses</p>
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">
+          Welcome back, {dealer.name}
+        </h1>
+        <p className="text-gray-600">Your reputation, on guard.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">

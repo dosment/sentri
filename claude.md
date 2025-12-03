@@ -31,9 +31,14 @@ cd /tmp/team-repo && git pull
 | Luke Wroblewski | Mobile | `mobile-luke-wroblewski.md` |
 | Rebecca Lindland | Market Research | `market-research-rebecca-lindland.md` |
 | Marty Neumeier | Brand | `branding-marty-neumeier.md` |
+| Joanna Wiebe | Copywriting | `copywriting-joanna-wiebe.md` |
+| Nick Mehta | Customer Success | `customer-success-nick-mehta.md` |
+| Max Schrems | Privacy & Legal | `privacy-legal-max-schrems.md` |
+| Google API Specialist | API Integration | `google-api-specialist.md` |
+| Vector | AI Architecture | `ai-architect-vector.md` |
 
 ## Project Context
 
 - **Product:** Sentri — AI review response automation for automotive dealerships
 - **Tagline:** "Your reputation, on guard."
-- **Tech Stack:** Node.js, React, PostgreSQL, Redis, Claude API
+- **Tech Stack:** Node.js, React, PostgreSQL, Redis, Gemini API

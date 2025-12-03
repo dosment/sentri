@@ -65,7 +65,7 @@ See [BRAND-GUIDELINES.md](BRAND-GUIDELINES.md) for complete brand documentation.
              ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │                    EXTERNAL SERVICES                             │
-│  Google API │ Facebook API │ Claude AI │ Twilio │ SendGrid      │
+│  Google API │ Facebook API │ Gemini AI │ Twilio │ SendGrid      │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -79,7 +79,7 @@ See [BRAND-GUIDELINES.md](BRAND-GUIDELINES.md) for complete brand documentation.
 | **Frontend** | React 18, TypeScript, Tailwind CSS |
 | **Database** | PostgreSQL 15 (Prisma ORM) |
 | **Queue** | Redis 7, BullMQ |
-| **AI** | Claude API (Anthropic) |
+| **AI** | Gemini API (Google) |
 | **Hosting** | Railway (MVP), AWS (scale) |
 | **SMS** | Twilio |
 | **Email** | SendGrid |
@@ -332,8 +332,8 @@ FACEBOOK_APP_ID=
 FACEBOOK_APP_SECRET=
 FACEBOOK_REDIRECT_URI=https://app.sentri.io/oauth/facebook/callback
 
-# AI
-ANTHROPIC_API_KEY=
+# AI (Google Gemini)
+GEMINI_API_KEY=
 
 # Communications
 TWILIO_ACCOUNT_SID=

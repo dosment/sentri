@@ -6,6 +6,12 @@ interface HeaderProps {
 }
 
 export function Header({ dealerName, onLogout }: HeaderProps) {
+  // Truncate long dealer names to prevent overflow
+  const maxLength = 25
+  const displayName = dealerName.length > maxLength
+    ? `${dealerName.slice(0, maxLength)}...`
+    : dealerName
+
   return (
     <header className="bg-white border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -18,9 +24,14 @@ export function Header({ dealerName, onLogout }: HeaderProps) {
           </div>
 
           <div className="flex items-center space-x-4">
-            <span className="text-sm text-gray-600">{dealerName}</span>
+            <span
+              className="text-sm text-gray-600 max-w-[200px] truncate"
+              title={dealerName}
+            >
+              {displayName}
+            </span>
             <Button variant="ghost" size="sm" onClick={onLogout}>
-              Logout
+              Sign out
             </Button>
           </div>
         </div>

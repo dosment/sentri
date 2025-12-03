@@ -69,7 +69,7 @@ I'll facilitate. Each team member: give me your concerns, edge cases, and blind 
 
 **5. Non-English Reviews**
 - What if review is in Spanish, Vietnamese, Chinese?
-- Claude can handle it, but should response be in same language?
+- Gemini can handle it, but should response be in same language?
 - **Decision needed:** Match language? Always English? Configurable?
 
 ---

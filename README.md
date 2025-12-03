@@ -15,7 +15,7 @@ Sentri monitors reviews across Google, Facebook, DealerRater, Yelp, and more —
 ## Features
 
 - **Multi-platform monitoring** — Google Business Profile, Facebook, DealerRater, Yelp, CarGurus
-- **AI response generation** — Personalized, contextual responses via Claude
+- **AI response generation** — Personalized, contextual responses via Google Gemini
 - **Smart automation** — Auto-approve 4-5 star reviews, queue negatives for human review
 - **Unified dashboard** — All reviews in one place, mobile-friendly
 - **Real-time alerts** — Email/SMS notifications for new reviews
@@ -26,7 +26,7 @@ Sentri monitors reviews across Google, Facebook, DealerRater, Yelp, and more —
 - **Frontend:** React, TypeScript, Tailwind CSS
 - **Database:** PostgreSQL (Prisma ORM)
 - **Queue:** Redis + BullMQ
-- **AI:** Claude API (Anthropic)
+- **AI:** Gemini API (Google)
 - **Infrastructure:** Railway
 
 ## Project Structure

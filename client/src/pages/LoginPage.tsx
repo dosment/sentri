@@ -75,9 +75,11 @@ export function LoginPage({ onLogin }: LoginPageProps) {
               </Button>
             </form>
 
-            <div className="mt-4 pt-4 border-t border-gray-200 text-center text-sm text-gray-500">
-              Demo: demo@example.com / demo1234
-            </div>
+            {import.meta.env.DEV && (
+              <div className="mt-4 pt-4 border-t border-gray-200 text-center text-sm text-gray-500">
+                Demo: demo@example.com / demo1234
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

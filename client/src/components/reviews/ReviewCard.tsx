@@ -89,8 +89,14 @@ export function ReviewCard({ review, onUpdate }: ReviewCardProps) {
 
   const responseText = review.response?.finalText || review.response?.generatedText
 
+  // Sentiment-based styling: red for negative (1-2), green for positive (4-5)
+  const sentimentBorder =
+    review.rating && review.rating <= 2 ? 'border-l-4 border-l-alert' :
+    review.rating && review.rating >= 4 ? 'border-l-4 border-l-success' :
+    ''
+
   return (
-    <Card className="mb-4">
+    <Card className={`mb-4 ${sentimentBorder}`}>
       <CardContent className="p-6">
         <div className="flex justify-between items-start mb-4">
           <div className="flex items-center space-x-3">
@@ -114,7 +120,7 @@ export function ReviewCard({ review, onUpdate }: ReviewCardProps) {
         {review.response && (
           <div className="bg-gray-50 rounded-lg p-4 mb-4">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-600">AI Response</span>
+              <span className="text-sm font-medium text-gray-600">Draft Response</span>
               {review.response.status === 'DRAFT' && (
                 <div className="flex space-x-2">
                   <Button
@@ -166,7 +172,7 @@ export function ReviewCard({ review, onUpdate }: ReviewCardProps) {
         <div className="flex justify-end space-x-2">
           {!review.response && (
             <Button onClick={handleGenerate} disabled={loading}>
-              {loading ? 'Generating...' : 'Generate Response'}
+              {loading ? 'Sentri is writing...' : 'Generate Response'}
             </Button>
           )}
           {review.response?.status === 'DRAFT' && !isEditing && (

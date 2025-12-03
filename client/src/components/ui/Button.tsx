@@ -27,8 +27,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
               variant === 'success',
           },
           {
-            'text-sm px-3 py-1.5': size === 'sm',
-            'text-sm px-4 py-2': size === 'md',
+            'text-sm px-4 py-2.5 min-h-[44px]': size === 'sm' || size === 'md',
             'text-base px-6 py-3': size === 'lg',
           },
           className
