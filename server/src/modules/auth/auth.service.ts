@@ -59,7 +59,7 @@ export async function register(input: RegisterInput): Promise<AuthResult> {
   return { dealer, token };
 }
 
-export async function login(input: LoginInput): Promise<AuthResult> {
+export async function login(input: LoginInput) {
   const dealer = await prisma.dealer.findUnique({
     where: { email: input.email },
     select: {
@@ -67,6 +67,7 @@ export async function login(input: LoginInput): Promise<AuthResult> {
       email: true,
       name: true,
       plan: true,
+      isAdmin: true,
       passwordHash: true,
     },
   });
@@ -83,7 +84,13 @@ export async function login(input: LoginInput): Promise<AuthResult> {
 
   const token = generateToken(dealer.id, dealer.email);
 
-  const { passwordHash: _, ...dealerData } = dealer;
+  const { passwordHash: _, isAdmin, ...dealerData } = dealer;
+
+  // Only include isAdmin in response if user is actually an admin
+  // This prevents leaking role information to regular dealers
+  if (isAdmin) {
+    return { dealer: { ...dealerData, isAdmin: true as const }, token };
+  }
 
   return { dealer: dealerData, token };
 }
@@ -97,7 +104,7 @@ export async function getDealer(dealerId: string) {
       name: true,
       phone: true,
       plan: true,
-      autoApproveThreshold: true,
+      isAdmin: true,
       createdAt: true,
     },
   });
@@ -106,11 +113,76 @@ export async function getDealer(dealerId: string) {
     throw new Error('Dealer not found');
   }
 
-  return dealer;
+  // Only include isAdmin in response if user is actually an admin
+  // This prevents leaking role information to regular dealers
+  const { isAdmin, ...dealerData } = dealer;
+  if (isAdmin) {
+    return { ...dealerData, isAdmin: true as const };
+  }
+
+  return dealerData;
 }
 
 function generateToken(dealerId: string, email: string): string {
   return jwt.sign({ dealerId, email }, env.JWT_SECRET, {
     expiresIn: TOKEN_EXPIRY,
   });
+}
+
+export interface OnboardingStatus {
+  steps: {
+    id: string;
+    label: string;
+    completed: boolean;
+  }[];
+  completedCount: number;
+  totalCount: number;
+  isComplete: boolean;
+}
+
+export async function getOnboardingStatus(dealerId: string): Promise<OnboardingStatus> {
+  const [platformConnection, reviewCount, approvedResponseCount] = await Promise.all([
+    prisma.platformConnection.findFirst({
+      where: { dealerId, platform: 'GOOGLE', isActive: true },
+      select: { id: true },
+    }),
+    prisma.review.count({
+      where: { dealerId },
+    }),
+    prisma.response.count({
+      where: { dealerId, status: 'APPROVED' },
+    }),
+  ]);
+
+  const steps = [
+    {
+      id: 'account_created',
+      label: 'Create your account',
+      completed: true, // Always true if they're authenticated
+    },
+    {
+      id: 'google_connected',
+      label: 'Connect Google Business Profile',
+      completed: !!platformConnection,
+    },
+    {
+      id: 'first_review',
+      label: 'Receive your first review',
+      completed: reviewCount > 0,
+    },
+    {
+      id: 'first_response',
+      label: 'Approve your first AI response',
+      completed: approvedResponseCount > 0,
+    },
+  ];
+
+  const completedCount = steps.filter((s) => s.completed).length;
+
+  return {
+    steps,
+    completedCount,
+    totalCount: steps.length,
+    isComplete: completedCount === steps.length,
+  };
 }

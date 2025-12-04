@@ -41,16 +41,84 @@ Sentri monitors reviews across Google, Facebook, DealerRater, Yelp, and more —
 
 ## Getting Started
 
+### Prerequisites
+
+- **Node.js** 18+
+- **PostgreSQL** 14+ (running locally or via Docker)
+- **Redis** (optional for MVP, required for queue processing)
+
+### 1. Install Dependencies
+
 ```bash
-# Install dependencies
-npm install
+npm run install:all
+```
 
-# Setup database
-npx prisma migrate dev
+### 2. Set Up Environment Variables
 
-# Run development server
+```bash
+cd server
+cp .env.example .env
+```
+
+Edit `server/.env` with your values:
+
+```env
+# Required
+DATABASE_URL=postgresql://user:password@localhost:5432/sentri
+JWT_SECRET=your-jwt-secret-min-32-chars-long
+ENCRYPTION_KEY=your-encryption-key-32-chars
+
+# Optional for MVP (demo mode works without these)
+GEMINI_API_KEY=your-gemini-api-key
+REDIS_URL=redis://localhost:6379
+```
+
+### 3. Set Up Database
+
+```bash
+# Push schema to database
+npm run db:push
+
+# Seed with demo data
+npm run db:seed
+```
+
+### 4. Start Development Server
+
+```bash
+# From project root - starts both server (3000) and client (5173)
 npm run dev
 ```
+
+Or run separately:
+
+```bash
+# Terminal 1 - Backend API
+cd server && npm run dev
+
+# Terminal 2 - Frontend
+cd client && npm run dev
+```
+
+### 5. Access the App
+
+- **Frontend:** http://localhost:5173
+- **API:** http://localhost:3000
+- **Demo login:** `demo@example.com` / `demo1234`
+
+### Troubleshooting
+
+**"Request failed" on login:**
+- Ensure PostgreSQL is running
+- Ensure the server is running on port 3000
+- Check `server/.env` has correct `DATABASE_URL`
+
+**Database connection errors:**
+- Verify PostgreSQL is running: `pg_isready`
+- Check database exists: `psql -l | grep sentri`
+
+**Port already in use:**
+- Kill existing process: `lsof -ti:3000 | xargs kill -9`
 
 ## Documentation
 

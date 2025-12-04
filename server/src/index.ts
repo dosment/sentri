@@ -7,6 +7,8 @@ import authRoutes from './routes/auth.routes.js';
 import reviewsRoutes from './routes/reviews.routes.js';
 import responsesRoutes from './routes/responses.routes.js';
 import aiRoutes from './routes/ai.routes.js';
+import adminRoutes from './routes/admin.routes.js';
+import settingsRoutes from './routes/settings.routes.js';
 
 const app = express();
 
@@ -38,6 +40,8 @@ app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/reviews', generalLimiter, reviewsRoutes);
 app.use('/api/responses', generalLimiter, responsesRoutes);
 app.use('/api/ai', aiLimiter, aiRoutes);
+app.use('/api/admin', generalLimiter, adminRoutes);
+app.use('/api/settings', generalLimiter, settingsRoutes);
 
 // Error handler
 app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {

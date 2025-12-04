@@ -10,6 +10,13 @@ export interface Dealer {
   createdAt: string
 }
 
+export interface AdminUser {
+  id: string
+  email: string
+  name: string
+  isAdmin: true
+}
+
 export interface AuthResult {
   dealer: Dealer
   token: string
@@ -45,4 +52,57 @@ export function logout() {
 
 export function isAuthenticated(): boolean {
   return !!api.getToken()
+}
+
+export interface OnboardingStep {
+  id: string
+  label: string
+  completed: boolean
+}
+
+export interface OnboardingStatus {
+  steps: OnboardingStep[]
+  completedCount: number
+  totalCount: number
+  isComplete: boolean
+}
+
+export async function getOnboardingStatus(): Promise<OnboardingStatus> {
+  return api.get<OnboardingStatus>('/auth/onboarding')
+}
+
+// Admin-specific auth functions
+export interface AdminAuthResult {
+  admin: AdminUser
+  token: string
+}
+
+export async function adminLogin(email: string, password: string): Promise<AdminAuthResult> {
+  const result = await api.post<{ dealer: AdminUser; token: string }>('/auth/login', { email, password })
+
+  // Verify this user is actually an admin
+  if (!result.dealer.isAdmin) {
+    throw new Error('Access denied. Admin privileges required.')
+  }
+
+  api.setToken(result.token)
+  localStorage.setItem('sentri_admin_session', 'true')
+  return { admin: result.dealer, token: result.token }
+}
+
+export async function getAdminMe(): Promise<AdminUser> {
+  const user = await api.get<AdminUser>('/auth/me')
+  if (!user.isAdmin) {
+    throw new Error('Access denied. Admin privileges required.')
+  }
+  return user
+}
+
+export function adminLogout() {
+  api.setToken(null)
+  localStorage.removeItem('sentri_admin_session')
+}
+
+export function isAdminSession(): boolean {
+  return localStorage.getItem('sentri_admin_session') === 'true'
 }

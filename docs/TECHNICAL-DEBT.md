@@ -1,33 +1,11 @@
 # Sentri — Technical Debt Register
 
-**Last Updated:** December 2024
+**Last Updated:** December 4, 2025
 **Owner:** Frank Slootman (COO)
 
 ---
 
 ## Active Debt
-
-### TD-003: OAuth Tokens Stored in Plaintext
-**Priority:** CRITICAL
-**Created:** Sprint 1 MVP
-**Component:** `server/prisma/schema.prisma` (PlatformConnection model)
-**Status:** RESOLVED
-
-**Description:**
-The schema defines `accessToken` and `refreshToken` fields but they are not encrypted. When Google OAuth is implemented, tokens will be stored in plaintext.
-
-**Risk:**
-- Database breach exposes all dealer Google accounts
-- Attackers could post responses as dealers
-- Regulatory and legal liability
-
-**Acceptance Criteria:**
-- [x] Implement AES-256-GCM encryption for tokens — `server/src/lib/crypto.ts`
-- [x] Store encryption key in environment variable — `TOKEN_ENCRYPTION_KEY` in `env.ts`
-- [x] Encrypt before save, decrypt on read — `server/src/modules/platforms/platforms.service.ts`
-- [ ] Add key rotation capability — deferred (document procedure first)
-
----
 
 ### TD-009: JWT Secret in Environment Variable Only
 **Priority:** MEDIUM
@@ -131,11 +109,11 @@ Demo credentials (demo@example.com / demo1234) are hardcoded and shown in login 
 ---
 
 ### TD-015: No Privacy Policy or Terms of Service
-**Priority:** CRITICAL
+**Priority:** CRITICAL → BLOCKED
 **Created:** Team Review v2
 **Component:** Legal documentation
 **Owner:** Max Schrems (Privacy/Legal)
-**Status:** IN REVIEW — drafts complete, pending legal review
+**Status:** BLOCKED — drafts complete, waiting on company formation
 
 **Description:**
 No legal documentation exists. Privacy Policy and Terms of Service are legally required before collecting real user data.
@@ -156,28 +134,6 @@ No legal documentation exists. Privacy Policy and Terms of Service are legally r
 - [ ] Legal counsel review and approval
 - [ ] Fill in placeholders ([INSERT...]) with actual company details
 - [ ] Add to application UI (footer links, signup checkbox)
-
----
-
-### TD-018: No Onboarding Flow
-**Priority:** HIGH
-**Created:** Team Review v2
-**Component:** `client/src/pages/DashboardPage.tsx`
-**Owner:** Nick Mehta (Customer Success)
-
-**Description:**
-No guided onboarding after signup. Dealers must figure out next steps on their own.
-
-**Risk:**
-- Low activation rates
-- Dealers abandon before connecting Google
-- No measurement of onboarding completion
-
-**Acceptance Criteria:**
-- [ ] Add onboarding checklist component
-- [ ] Track completion of: account created, Google connected, first review viewed, first response approved
-- [ ] Show progress indicator
-- [ ] Trigger re-engagement if onboarding incomplete after 24/72 hours
 
 ---
 
@@ -404,10 +360,39 @@ Four files are meeting transcripts, not documentation: EDGE-CASES.md, MVP-REVIEW
 
 ---
 
+### TD-033: No Default Development Environment
+**Priority:** LOW
+**Created:** December 2025
+**Component:** `server/.env`, `server/src/config/env.ts`
+**Owner:** Daniele Procida (Documentation)
+**Status:** PARTIAL — `.env` with dev defaults added, proper solution pending
+
+**Description:**
+Server crashes on startup without `.env` file. New developers must manually create environment variables before they can run `npm run dev`. The `.env.example` exists but requires copy and modification.
+
+**Risk:**
+- Friction for new developers
+- Confusion about required vs optional variables
+- Inconsistent local development setups
+
+**Temporary Fix Applied:**
+- Created `server/.env` with default PostgreSQL connection string and development JWT secret
+- Assumes local PostgreSQL with `postgres:postgres` credentials on default port
+- Database name: `sentri_dev`
+
+**Acceptance Criteria:**
+- [x] Add `server/.env` to `.gitignore` (credentials should not be committed) — already present
+- [ ] Update env.ts to provide sensible defaults for development mode
+- [ ] Generate random JWT_SECRET in development if not provided
+- [ ] Add Docker Compose for local PostgreSQL (removes external dependency)
+- [ ] Document in Getting Started tutorial (blocked on TD-027)
+
+---
+
 ## Resolved Debt
 
 ### TD-001: No Input Validation on AI Prompts
-**Priority:** HIGH | **Resolved:** December 2024 | **Commit:** 9822b56
+**Priority:** HIGH | **Resolved:** December 2025 | **Commit:** 9822b56
 
 - [x] Sanitize review text before including in prompt
 - [x] Implement content length limits (5000 chars)
@@ -417,7 +402,7 @@ Four files are meeting transcripts, not documentation: EDGE-CASES.md, MVP-REVIEW
 ---
 
 ### TD-002: No Rate Limiting on API Endpoints
-**Priority:** HIGH | **Resolved:** December 2024 | **Commit:** 9822b56
+**Priority:** HIGH | **Resolved:** December 2025 | **Commit:** 9822b56
 
 - [x] Add rate limiting middleware (express-rate-limit)
 - [x] Auth endpoints: 10 req/15min per IP
@@ -427,7 +412,7 @@ Four files are meeting transcripts, not documentation: EDGE-CASES.md, MVP-REVIEW
 ---
 
 ### TD-004: No Request Logging or Audit Trail
-**Priority:** HIGH | **Resolved:** December 2024 | **Commit:** 9822b56
+**Priority:** HIGH | **Resolved:** December 2025 | **Commit:** 9822b56
 
 - [x] Add structured JSON logging
 - [x] Log all auth events (login, logout, failed attempts)
@@ -437,7 +422,7 @@ Four files are meeting transcripts, not documentation: EDGE-CASES.md, MVP-REVIEW
 ---
 
 ### TD-005: No Error Boundaries in React
-**Priority:** MEDIUM | **Resolved:** December 2024 | **Commit:** 9822b56
+**Priority:** MEDIUM | **Resolved:** December 2025 | **Commit:** 9822b56
 
 - [x] Add root error boundary component
 - [x] Show user-friendly error UI
@@ -447,7 +432,7 @@ Four files are meeting transcripts, not documentation: EDGE-CASES.md, MVP-REVIEW
 ---
 
 ### TD-006: No Loading States for Dashboard Stats
-**Priority:** LOW | **Resolved:** December 2024 | **Commit:** 9822b56
+**Priority:** LOW | **Resolved:** December 2025 | **Commit:** 9822b56
 
 - [x] Add skeleton loading state for stat cards
 - [x] Smooth transition when data arrives
@@ -455,7 +440,7 @@ Four files are meeting transcripts, not documentation: EDGE-CASES.md, MVP-REVIEW
 ---
 
 ### TD-007: No Password Strength Validation
-**Priority:** MEDIUM | **Resolved:** December 2024 | **Commit:** 9822b56
+**Priority:** MEDIUM | **Resolved:** December 2025 | **Commit:** 9822b56
 
 - [x] Require uppercase, lowercase, number
 - [ ] Consider zxcvbn for strength scoring (future enhancement)
@@ -464,7 +449,7 @@ Four files are meeting transcripts, not documentation: EDGE-CASES.md, MVP-REVIEW
 ---
 
 ### TD-008: No CSRF Protection
-**Priority:** HIGH | **Resolved:** December 2024 | **Commit:** 9822b56
+**Priority:** HIGH | **Resolved:** December 2025 | **Commit:** 9822b56
 
 - [x] CORS hardening with explicit methods and headers
 - [x] Using Authorization header (not cookies) mitigates CSRF
@@ -473,7 +458,7 @@ Four files are meeting transcripts, not documentation: EDGE-CASES.md, MVP-REVIEW
 ---
 
 ### TD-011: No Health Check for Dependencies
-**Priority:** MEDIUM | **Resolved:** December 2024 | **Commit:** 9822b56
+**Priority:** MEDIUM | **Resolved:** December 2025 | **Commit:** 9822b56
 
 - [x] Health check verifies database connectivity
 - [ ] Health check verifies Redis connectivity (when added)
@@ -482,7 +467,7 @@ Four files are meeting transcripts, not documentation: EDGE-CASES.md, MVP-REVIEW
 ---
 
 ### TD-016: No Empty States in UI
-**Priority:** HIGH | **Resolved:** December 2024
+**Priority:** HIGH | **Resolved:** December 2025
 
 - [x] Add empty state to ReviewList with guidance and CTA
 - [x] Include "Connect Google Account" button for new dealers
@@ -493,7 +478,7 @@ Four files are meeting transcripts, not documentation: EDGE-CASES.md, MVP-REVIEW
 ---
 
 ### TD-017: Mobile Touch Targets Too Small
-**Priority:** MEDIUM | **Resolved:** December 2024
+**Priority:** MEDIUM | **Resolved:** December 2025
 
 - [x] Increase sm/md button size to minimum 44px height
 - [x] Added `min-h-[44px]` and increased padding to `py-2.5`
@@ -502,7 +487,7 @@ Four files are meeting transcripts, not documentation: EDGE-CASES.md, MVP-REVIEW
 ---
 
 ### TD-021: Generic Microcopy Throughout UI
-**Priority:** LOW | **Resolved:** December 2024
+**Priority:** LOW | **Resolved:** December 2025
 
 - [x] Change "AI Response" to "Draft Response"
 - [x] Change "Generating..." to "Sentri is writing..."
@@ -512,7 +497,7 @@ Four files are meeting transcripts, not documentation: EDGE-CASES.md, MVP-REVIEW
 ---
 
 ### TD-022: Dealer Name Overflow in Header
-**Priority:** HIGH | **Resolved:** December 2024
+**Priority:** HIGH | **Resolved:** December 2025
 
 - [x] Truncate dealer name with ellipsis after ~25 characters
 - [x] Add title attribute for full name on hover
@@ -521,7 +506,7 @@ Four files are meeting transcripts, not documentation: EDGE-CASES.md, MVP-REVIEW
 ---
 
 ### TD-023: Empty State CTA Button Non-Functional
-**Priority:** HIGH | **Resolved:** December 2024
+**Priority:** HIGH | **Resolved:** December 2025
 
 - [x] Disabled button with reduced opacity
 - [x] Added "Coming Soon" tooltip on hover
@@ -530,7 +515,7 @@ Four files are meeting transcripts, not documentation: EDGE-CASES.md, MVP-REVIEW
 ---
 
 ### TD-025: Demo Credentials Visible in Production UI
-**Priority:** HIGH | **Resolved:** December 2024
+**Priority:** HIGH | **Resolved:** December 2025
 
 - [x] Control demo hint visibility via `import.meta.env.DEV`
 - [x] Demo credentials only visible in development mode
@@ -538,35 +523,62 @@ Four files are meeting transcripts, not documentation: EDGE-CASES.md, MVP-REVIEW
 
 ---
 
+### TD-003: OAuth Tokens Stored in Plaintext
+**Priority:** CRITICAL | **Resolved:** December 2025
+
+- [x] Implement AES-256-GCM encryption for tokens — `server/src/lib/crypto.ts`
+- [x] Store encryption key in environment variable — `TOKEN_ENCRYPTION_KEY` in `env.ts`
+- [x] Encrypt before save, decrypt on read — `server/src/modules/platforms/platforms.service.ts`
+- [ ] Add key rotation capability — deferred to TD-009 (document procedure first)
+
+---
+
+### TD-018: No Onboarding Flow
+**Priority:** HIGH | **Resolved:** December 2025
+
+- [x] Add onboarding checklist component — `client/src/components/onboarding/OnboardingChecklist.tsx`
+- [x] Track completion of: account created, Google connected, first review received, first response approved
+- [x] Show progress indicator with visual progress bar
+- [x] Add server-side onboarding status endpoint — `GET /auth/onboarding`
+- [ ] Trigger re-engagement if onboarding incomplete after 24/72 hours (future enhancement)
+
+---
+
 ## Debt Summary
 
-| Priority | Active | Resolved |
-|----------|--------|----------|
-| CRITICAL | 2 | 0 |
-| HIGH | 6 | 8 |
-| MEDIUM | 8 | 4 |
-| LOW | 2 | 2 |
-| **Total** | **18** | **14** |
+| Priority | Active | Blocked | Resolved |
+|----------|--------|---------|----------|
+| CRITICAL | 0 | 1 | 1 |
+| HIGH | 5 | 0 | 9 |
+| MEDIUM | 8 | 0 | 4 |
+| LOW | 3 | 0 | 2 |
+| **Total** | **16** | **1** | **16** |
 
 ### Active Debt by Category
 
 | Category | Items | Owners |
 |----------|-------|--------|
-| Legal/Compliance | TD-015 | Max Schrems |
-| Security | TD-003, TD-009 | Bruce Schneier |
+| Security | TD-009 | Bruce Schneier |
 | Infrastructure | TD-010, TD-012, TD-013 | Kelsey Hightower, James Bach |
-| UX/UI | TD-018, TD-020, TD-024, TD-026 | Nick, Marty N, Steve |
+| UX/UI | TD-020, TD-024, TD-026 | Marty N, Steve |
 | Product | TD-019 | Jeff Bezos |
-| Documentation | TD-027, TD-028, TD-029, TD-030, TD-031, TD-032 | Daniele Procida |
+| Documentation | TD-027, TD-028, TD-029, TD-030, TD-031, TD-032, TD-033 | Daniele Procida |
 | Cleanup | TD-014 | — |
+
+### Blocked Debt
+
+| Category | Items | Owners | Blocker |
+|----------|-------|--------|---------|
+| Legal/Compliance | TD-015 | Max Schrems | Company formation |
 
 ### Blocking Items
 
 | ID | Description | Blocks |
 |----|-------------|--------|
-| TD-015 | Privacy Policy / ToS | **Pilot with real users** |
-| TD-003 | Token encryption | Google OAuth implementation |
+| TD-012 | No automated tests | CI test runs, confident refactoring |
 | TD-027 | No Getting Started tutorial | **New developer onboarding** |
+
+*Note: TD-015 (Legal docs) blocked on company formation, TD-003 (Token encryption) resolved.*
 
 ---
 
@@ -582,10 +594,14 @@ Four files are meeting transcripts, not documentation: EDGE-CASES.md, MVP-REVIEW
 
 | Date | Change |
 |------|--------|
-| Dec 2024 | Initial register with 14 items from MVP review |
-| Dec 2024 | Resolved 8 items (TD-001, 002, 004, 005, 006, 007, 008, 011) |
-| Dec 2024 | Added 7 items from Team Review v2 (TD-015 through TD-021) |
-| Dec 2024 | Resolved 3 items (TD-016, 017, 021) — UX quick wins |
-| Dec 2024 | Added 5 items from UI/UX Deep Dive (TD-022 through TD-026) |
-| Dec 2024 | Resolved 3 items (TD-022, 023, 025) — Demo readiness fixes |
-| Dec 2024 | Added 6 items from Documentation Review (TD-027 through TD-032) — Diátaxis analysis |
+| Dec 2025 | Initial register with 14 items from MVP review |
+| Dec 2025 | Resolved 8 items (TD-001, 002, 004, 005, 006, 007, 008, 011) |
+| Dec 2025 | Added 7 items from Team Review v2 (TD-015 through TD-021) |
+| Dec 2025 | Resolved 3 items (TD-016, 017, 021) — UX quick wins |
+| Dec 2025 | Added 5 items from UI/UX Deep Dive (TD-022 through TD-026) |
+| Dec 2025 | Resolved 3 items (TD-022, 023, 025) — Demo readiness fixes |
+| Dec 2025 | Added 6 items from Documentation Review (TD-027 through TD-032) — Diátaxis analysis |
+| Dec 2025 | Added TD-033 — No default dev environment (partial fix applied with `.env` defaults) |
+| Dec 2025 | Resolved TD-003 — Token encryption complete (AES-256-GCM) |
+| Dec 2025 | Blocked TD-015 — Legal docs drafted, waiting on company formation |
+| Dec 2025 | Resolved TD-018 — Onboarding checklist with progress tracking |

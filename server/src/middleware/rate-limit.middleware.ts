@@ -9,10 +9,12 @@ export const generalLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-// Auth rate limit: 10 requests per 15 minutes (stricter for login/register)
+// Auth rate limit: stricter for login/register
+// Development: 50 requests per 15 minutes, Production: 10
+const isDev = process.env.NODE_ENV !== 'production';
 export const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 10,
+  max: isDev ? 50 : 10,
   message: { error: 'Too many authentication attempts, please try again later' },
   standardHeaders: true,
   legacyHeaders: false,

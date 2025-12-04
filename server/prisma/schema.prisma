@@ -15,9 +15,18 @@ model Dealer {
   phone                String?
   plan                 Plan     @default(STARTER)
   voiceProfile         Json?
-  autoApproveThreshold Int      @default(4)
+  isAdmin              Boolean  @default(false)
+  customInstructions   String?  @db.Text
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
+
+  // Response settings
+  autoPostEnabled      Boolean  @default(false)
+  autoPostThreshold    Int      @default(4)    // Auto-post reviews >= this rating
+  negativeThreshold    Int      @default(3)    // Reviews <= this are "negative"
+  responseTone         String   @default("professional")
+  signOffName          String?
+  signOffTitle         String?
 
   platformConnections PlatformConnection[]
   reviews             Review[]

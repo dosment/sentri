@@ -1,7 +1,7 @@
 # Sentri — Business Plan
 
 **Version:** 2.0
-**Date:** December 2024
+**Date:** December 2025
 
 ---
 

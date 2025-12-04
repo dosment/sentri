@@ -3,5 +3,21 @@
 @tailwind utilities;
 
 body {
-  @apply bg-gray-50 text-gray-900 antialiased;
+  @apply bg-canvas text-gray-900 antialiased;
+}
+
+/* Tabular numbers for dashboard stats */
+.tabular-nums {
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+}
+
+/* Shimmer effect for AI loading states */
+.shimmer-bg {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(30, 58, 95, 0.08) 50%,
+    transparent 100%
+  );
 }

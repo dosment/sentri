@@ -95,4 +95,13 @@ router.get('/me', authenticate, async (req: AuthRequest, res: Response, next: Ne
   }
 });
 
+router.get('/onboarding', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const status = await authService.getOnboardingStatus(req.dealer!.id);
+    res.json(status);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;

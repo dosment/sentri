@@ -1,7 +1,7 @@
 # Sentri — Brand Asset Specifications
 
 **Version:** 1.0
-**Date:** December 2024
+**Date:** December 2025
 **Owner:** Marty Neumeier (Brand Strategy)
 **Purpose:** Technical specifications for designers to create brand assets
 

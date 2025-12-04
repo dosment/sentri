@@ -3,11 +3,18 @@ import { cn } from '@/lib/cn'
 interface CardProps {
   children: React.ReactNode
   className?: string
+  hoverable?: boolean
 }
 
-export function Card({ children, className }: CardProps) {
+export function Card({ children, className, hoverable = false }: CardProps) {
   return (
-    <div className={cn('bg-white rounded-lg shadow-sm border border-gray-200', className)}>
+    <div
+      className={cn(
+        'bg-white rounded-xl shadow-card',
+        hoverable && 'transition-all duration-small ease-in-out hover:shadow-card-hover hover:-translate-y-1',
+        className
+      )}
+    >
       {children}
     </div>
   )

@@ -1,6 +1,6 @@
 # Sentri — Team Meeting: Gaps & Edge Cases
 
-**Date:** December 2024
+**Date:** December 2025
 **Called by:** Andy Grove (Project Manager)
 **Attendees:** Full Team
 

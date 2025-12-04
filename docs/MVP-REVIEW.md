@@ -1,6 +1,6 @@
 # Sentri MVP — Team Review (v2)
 
-**Date:** December 2024
+**Date:** December 2025
 **Sprint:** S1-S7 (MVP)
 **Facilitator:** Andy Grove
 **Review Round:** 2 (expanded team)

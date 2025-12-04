@@ -61,22 +61,54 @@ interface GenerateResponseInput {
   rating: number | null;
   reviewText: string;
   voiceProfile?: any;
+  responseTone?: 'professional' | 'neighborly';
+  signOffName?: string | null;
+  signOffTitle?: string | null;
 }
 
 const SYSTEM_PROMPT = `You are an AI assistant that generates professional, personalized responses to customer reviews for automotive dealerships.
 
-Guidelines:
+Core Guidelines:
 - Be warm, professional, and authentic
 - Thank the customer by name when provided
-- For positive reviews (4-5 stars): Express genuine gratitude, highlight specific points they mentioned, invite them back
-- For negative reviews (1-3 stars): Apologize sincerely, acknowledge their concerns without being defensive, offer to make it right, provide contact for follow-up
-- Keep responses concise (2-4 sentences for positive, 3-5 for negative)
-- Never offer discounts, free services, or compensation in the response
-- Never admit liability or fault for specific incidents
-- Never use generic templates - each response should feel personal
-- Match the dealer's voice profile if provided
+- Vary your sentence structure and opening phrases to avoid sounding templated
+- If the review is in a language other than English, respond in the same language
 
-Output only the response text, nothing else.`;
+Response Strategy by Rating:
+- For positive reviews (4-5 stars):
+  * Express genuine gratitude
+  * Highlight specific points they mentioned
+  * Invite them back
+  * Keep responses 2-4 sentences
+
+- For neutral reviews (3 stars):
+  * Thank them for their feedback
+  * Acknowledge their experience
+  * Express commitment to improvement
+  * Keep responses 2-4 sentences
+
+- For negative reviews (1-2 stars):
+  * Apologize sincerely
+  * Acknowledge their concerns without being defensive
+  * Offer to make it right
+  * Provide clear next step for offline resolution
+  * Keep responses 3-5 sentences
+
+Tone Adaptation:
+- Professional tone: Use measured, formal language ("We sincerely apologize", "Please contact us", "We appreciate your feedback")
+- Neighborly tone: Use warm, conversational language ("We're really sorry", "Give us a call", "Thanks so much for sharing")
+
+Strict Prohibitions:
+- NEVER offer discounts, free services, refunds, or any form of compensation
+- NEVER admit liability or fault for specific incidents (accidents, injuries, damages)
+- NEVER mention competitor dealerships or brands
+- NEVER use identical phrasing for consecutive reviews from the same dealer
+- NEVER make promises you can't keep ("we'll fix this immediately")
+
+Output Format:
+- Output only the response text, nothing else
+- Do not include a sign-off (the system will add this automatically)
+- Keep responses concise and conversational`;
 
 export async function generateResponse(
   input: GenerateResponseInput,
@@ -105,6 +137,10 @@ export async function generateResponse(
     ? `Rating: ${input.rating}/5 stars`
     : 'Rating: Not provided';
 
+  const toneContext = input.responseTone
+    ? `\nTone preference: ${input.responseTone}`
+    : '';
+
   const voiceContext = input.voiceProfile
     ? `\n\nDealer voice profile: ${JSON.stringify(input.voiceProfile)}`
     : '';
@@ -113,20 +149,30 @@ export async function generateResponse(
 
 Dealership: ${sanitizedDealerName}
 Reviewer: ${sanitizedReviewerName}
-${ratingContext}
+${ratingContext}${toneContext}
 
 Review text:
 "${sanitizedReviewText}"${voiceContext}`;
 
   const result = await model.generateContent(prompt);
   const response = result.response;
-  const text = response.text();
+  let text = response.text();
 
   if (!text) {
     throw new Error('Empty response from Gemini');
   }
 
-  return text.trim();
+  text = text.trim();
+
+  // Append sign-off if provided
+  if (input.signOffName) {
+    const signOff = input.signOffTitle
+      ? `${input.signOffName}, ${input.signOffTitle}`
+      : input.signOffName;
+    text = `${text}\n\n${signOff}`;
+  }
+
+  return text;
 }
 
 export async function generateResponseForReview(reviewId: string, dealerId: string) {
@@ -134,7 +180,13 @@ export async function generateResponseForReview(reviewId: string, dealerId: stri
     where: { id: reviewId, dealerId },
     include: {
       dealer: {
-        select: { name: true, voiceProfile: true },
+        select: {
+          name: true,
+          voiceProfile: true,
+          responseTone: true,
+          signOffName: true,
+          signOffTitle: true,
+        },
       },
     },
   });
@@ -150,6 +202,9 @@ export async function generateResponseForReview(reviewId: string, dealerId: stri
       rating: review.rating,
       reviewText: review.reviewText,
       voiceProfile: review.dealer.voiceProfile,
+      responseTone: review.dealer.responseTone as 'professional' | 'neighborly',
+      signOffName: review.dealer.signOffName,
+      signOffTitle: review.dealer.signOffTitle,
     },
     reviewId
   );

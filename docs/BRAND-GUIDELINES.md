@@ -1,7 +1,7 @@
 # Sentri — Brand Guidelines
 
 **Version:** 1.0
-**Date:** December 2024
+**Date:** December 2025
 **Owner:** Marty Neumeier (Brand Strategy)
 **Approved by:** Andy Grove (Project Manager)
 

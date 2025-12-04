@@ -1,7 +1,7 @@
 # Google OAuth Setup — Requirements for Dan
 
 **Owner:** Dan (CEO)
-**Created:** December 2024
+**Created:** December 2025
 **Purpose:** Get Google Business Profile OAuth working for Sentri
 
 ---
@@ -298,4 +298,4 @@ Common issues:
 
 ---
 
-*Last updated: December 2024*
+*Last updated: December 2025*

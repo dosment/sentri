@@ -11,12 +11,13 @@ async function main() {
 
   const dealer = await prisma.dealer.upsert({
     where: { email: 'demo@example.com' },
-    update: {},
+    update: { isAdmin: true },
     create: {
       email: 'demo@example.com',
       passwordHash,
       name: 'Westside Auto Group',
       phone: '555-123-4567',
+      isAdmin: true,
       voiceProfile: {
         tone: 'friendly and professional',
         signoff: 'The Westside Auto Team',

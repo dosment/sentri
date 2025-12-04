@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react'
-import { Layout } from '@/components/layout/Layout'
+import { useState, useCallback } from 'react'
+import { AppShell } from '@/components/layout/AppShell'
+import { ActionBar } from '@/components/dashboard/ActionBar'
+import { AllCaughtUp } from '@/components/dashboard/AllCaughtUp'
 import { ReviewList } from '@/components/reviews/ReviewList'
-import { Card, CardContent } from '@/components/ui/Card'
-import { StatCardSkeleton } from '@/components/ui/Skeleton'
-import { getReviewStats, type ReviewStats } from '@/api/reviews'
+import { OnboardingChecklist } from '@/components/onboarding/OnboardingChecklist'
 import type { Dealer } from '@/api/auth'
 
 interface DashboardPageProps {
@@ -12,73 +12,54 @@ interface DashboardPageProps {
 }
 
 export function DashboardPage({ dealer, onLogout }: DashboardPageProps) {
-  const [stats, setStats] = useState<ReviewStats | null>(null)
-  const [statsLoading, setStatsLoading] = useState(true)
+  const [reviewStats, setReviewStats] = useState({ needsAttention: 0, total: 0 })
+  const [statsLoaded, setStatsLoaded] = useState(false)
 
-  useEffect(() => {
-    getReviewStats()
-      .then(setStats)
-      .catch(console.error)
-      .finally(() => setStatsLoading(false))
+  const handleStatsChange = useCallback((stats: { needsAttention: number; total: number }) => {
+    setReviewStats(stats)
+    setStatsLoaded(true)
   }, [])
 
+  const respondedCount = reviewStats.total - reviewStats.needsAttention
+  const responseRate = reviewStats.total > 0
+    ? Math.round((respondedCount / reviewStats.total) * 100)
+    : 100
+
+  const showAllCaughtUp = statsLoaded && reviewStats.needsAttention === 0 && reviewStats.total > 0
+
   return (
-    <Layout dealerName={dealer.name} onLogout={onLogout}>
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">
-          Welcome back, {dealer.name}
-        </h1>
-        <p className="text-gray-600">Your reputation, on guard.</p>
-      </div>
+    <AppShell
+      dealerName={dealer.name}
+      pageTitle="Dashboard"
+      newReviewCount={reviewStats.needsAttention}
+      onLogout={onLogout}
+    >
+      {/* Onboarding Checklist - only shows if not complete */}
+      <OnboardingChecklist />
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        {statsLoading ? (
-          <>
-            <StatCardSkeleton />
-            <StatCardSkeleton />
-            <StatCardSkeleton />
-            <StatCardSkeleton />
-          </>
-        ) : stats ? (
-          <>
-            <Card>
-              <CardContent className="p-4 text-center">
-                <p className="text-3xl font-bold text-sentri-blue">{stats.total}</p>
-                <p className="text-sm text-gray-600">Total Reviews</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-4 text-center">
-                <p className="text-3xl font-bold text-warning">
-                  {stats.byStatus?.NEW || 0}
-                </p>
-                <p className="text-sm text-gray-600">New Reviews</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-4 text-center">
-                <p className="text-3xl font-bold text-success">
-                  {stats.byStatus?.RESPONDED || 0}
-                </p>
-                <p className="text-sm text-gray-600">Responded</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-4 text-center">
-                <p className="text-3xl font-bold text-guardian-navy">
-                  {stats.avgRating?.toFixed(1) || 'N/A'}
-                </p>
-                <p className="text-sm text-gray-600">Avg Rating</p>
-              </CardContent>
-            </Card>
-          </>
-        ) : null}
-      </div>
+      {/* Action Bar - shows when there are reviews needing attention */}
+      {statsLoaded && reviewStats.needsAttention > 0 && (
+        <ActionBar
+          needsAttentionCount={reviewStats.needsAttention}
+          totalCount={reviewStats.total}
+          responseRate={responseRate}
+        />
+      )}
 
-      <div>
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Reviews</h2>
-        <ReviewList />
+      {/* All Caught Up - celebration when no reviews need attention */}
+      {showAllCaughtUp && (
+        <AllCaughtUp
+          totalResponded={respondedCount}
+          responseRate={responseRate}
+          avgRating={null}
+          dealerName={dealer.name}
+        />
+      )}
+
+      {/* Reviews - the core product */}
+      <div className={showAllCaughtUp ? 'mt-8 pt-8 border-t border-gray-200' : ''}>
+        <ReviewList onStatsChange={handleStatsChange} />
       </div>
-    </Layout>
+    </AppShell>
   )
 }

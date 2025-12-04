@@ -8,6 +8,7 @@ export interface AuthRequest extends Request {
     id: string;
     email: string;
     name: string;
+    isAdmin: boolean;
   };
 }
 
@@ -33,7 +34,7 @@ export async function authenticate(
 
     const dealer = await prisma.dealer.findUnique({
       where: { id: payload.dealerId },
-      select: { id: true, email: true, name: true },
+      select: { id: true, email: true, name: true, isAdmin: true },
     });
 
     if (!dealer) {
