@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: sentri-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: sentri_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: sentri-api
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/sentri_dev
+      JWT_SECRET: dev-jwt-secret-min-32-characters-long-for-local-dev
+      APP_URL: http://localhost:5173
+      API_URL: http://localhost:3000
+      # Add your API keys here or use .env file
+      # GEMINI_API_KEY: your-key-here
+      # TOKEN_ENCRYPTION_KEY: your-64-char-hex-key-here
+    ports:
+      - "3000:3000"
+    # For development with hot reload, uncomment:
+    # volumes:
+    #   - ./server/src:/app/src
+    #   - ./server/prisma:/app/prisma
+
+  # Optional: Prisma Studio for database management
+  # studio:
+  #   build:
+  #     context: ./server
+  #   command: npx prisma studio
+  #   depends_on:
+  #     - db
+  #   environment:
+  #     DATABASE_URL: postgresql://postgres:postgres@db:5432/sentri_dev
+  #   ports:
+  #     - "5555:5555"
+
+volumes:
+  postgres_data:

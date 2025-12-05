@@ -47,7 +47,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
                 label="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@dealership.com"
+                placeholder="you@yourbusiness.com"
                 required
               />
 

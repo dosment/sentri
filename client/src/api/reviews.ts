@@ -33,19 +33,53 @@ export interface ReviewStats {
   avgRating: number | null
 }
 
-export async function getReviews(filters?: {
+export interface ReportingStats {
+  responseRate: number
+  avgRating: number | null
+  pendingCount: number
+  totalReviews: number
+  responsesGenerated: number
+}
+
+export interface PaginationInfo {
+  page: number
+  limit: number
+  total: number
+  totalPages: number
+  hasMore: boolean
+}
+
+export interface ReviewsResponse {
+  data: Review[]
+  pagination: PaginationInfo
+  filters: {
+    hideOldReviews: boolean
+    oldReviewThresholdDays: number
+  }
+}
+
+export interface ReviewFilters {
   status?: ReviewStatus
   platform?: Platform
   hasResponse?: boolean
-}): Promise<Review[]> {
+  includeOld?: boolean
+  page?: number
+  limit?: number
+}
+
+export async function getReviews(filters?: ReviewFilters): Promise<ReviewsResponse> {
   const params = new URLSearchParams()
   if (filters?.status) params.set('status', filters.status)
   if (filters?.platform) params.set('platform', filters.platform)
   if (filters?.hasResponse !== undefined)
     params.set('hasResponse', String(filters.hasResponse))
+  if (filters?.includeOld !== undefined)
+    params.set('includeOld', String(filters.includeOld))
+  if (filters?.page) params.set('page', String(filters.page))
+  if (filters?.limit) params.set('limit', String(filters.limit))
 
   const query = params.toString()
-  return api.get<Review[]>(`/reviews${query ? `?${query}` : ''}`)
+  return api.get<ReviewsResponse>(`/reviews${query ? `?${query}` : ''}`)
 }
 
 export async function getReview(id: string): Promise<Review> {
@@ -54,6 +88,10 @@ export async function getReview(id: string): Promise<Review> {
 
 export async function getReviewStats(): Promise<ReviewStats> {
   return api.get<ReviewStats>('/reviews/stats')
+}
+
+export async function getReportingStats(): Promise<ReportingStats> {
+  return api.get<ReportingStats>('/reviews/reporting-stats')
 }
 
 export async function updateReviewStatus(

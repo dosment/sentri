@@ -426,40 +426,40 @@ I'll facilitate. Each team member: give me your concerns, edge cases, and blind 
 
 ### Must Fix (Blocks Launch):
 
-| Gap | Owner | Priority |
-|-----|-------|----------|
-| Multi-location OAuth handling | Rob Pike | P0 |
-| Empty review text handling | Rob Pike | P0 |
-| Response already exists check | Rob Pike | P0 |
-| Bulk approve UI | Dan Abramov | P0 |
-| AI prompt injection hardening | Bruce Schneier | P0 |
-| Onboarding empty state | Steve Jobs | P0 |
-| Historical review import on connect | Rob Pike | P0 |
-| Notification digest mode | Dan Abramov | P1 |
+| Gap                                 | Owner          | Priority |
+|-------------------------------------|----------------|----------|
+| Multi-location OAuth handling       | Rob Pike       | P0       |
+| Empty review text handling          | Rob Pike       | P0       |
+| Response already exists check       | Rob Pike       | P0       |
+| Bulk approve UI                     | Dan Abramov    | P0       |
+| AI prompt injection hardening       | Bruce Schneier | P0       |
+| Onboarding empty state              | Steve Jobs     | P0       |
+| Historical review import on connect | Rob Pike       | P0       |
+| Notification digest mode            | Dan Abramov    | P1       |
 
 ### Should Fix (Before Paid Launch):
 
-| Gap | Owner | Priority |
-|-----|-------|----------|
-| Token refresh locking | Rob Pike | P1 |
-| Response variation tracking | Rob Pike | P1 |
-| Negative review escalation alerts | Dan Abramov | P1 |
-| Non-English review handling | Team Decision | P1 |
-| Staging environment | Kelsey Hightower | P1 |
-| AI response test suite (100 reviews) | James Bach | P1 |
-| Franchise prohibited words | Brian Pasch | P1 |
+| Gap                                  | Owner            | Priority |
+|--------------------------------------|------------------|----------|
+| Token refresh locking                | Rob Pike         | P1       |
+| Response variation tracking          | Rob Pike         | P1       |
+| Negative review escalation alerts    | Dan Abramov      | P1       |
+| Non-English review handling          | Team Decision    | P1       |
+| Staging environment                  | Kelsey Hightower | P1       |
+| AI response test suite (100 reviews) | James Bach       | P1       |
+| Franchise prohibited words           | Brian Pasch      | P1       |
 
 ### Track for Phase 2:
 
-| Gap | Owner |
-|-----|-------|
-| MFA for dealer accounts | Bruce Schneier |
-| Agency/multi-dealer model | Martin Kleppmann |
-| Competitor monitoring | Brian Pasch |
-| Web push notifications | Luke Wroblewski |
-| Employee mention attribution | Brian Pasch |
-| Enterprise pricing | Jeff Bezos |
-| International expansion | Rebecca Lindland |
+| Gap                          | Owner            |
+|------------------------------|------------------|
+| MFA for dealer accounts      | Bruce Schneier   |
+| Agency/multi-dealer model    | Martin Kleppmann |
+| Competitor monitoring        | Brian Pasch      |
+| Web push notifications       | Luke Wroblewski  |
+| Employee mention attribution | Brian Pasch      |
+| Enterprise pricing           | Jeff Bezos       |
+| International expansion      | Rebecca Lindland |
 
 ---
 

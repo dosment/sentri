@@ -1,16 +1,31 @@
 import { prisma } from '../../config/database.js';
 import { ResponseStatus, ReviewStatus } from '@prisma/client';
+import { NotFoundError, ValidationError } from '../../lib/errors.js';
 
-export async function getResponse(responseId: string, dealerId: string) {
+// Maximum age (in days) for a review to be eligible for auto-posting
+// Reviews older than this will never be auto-approved, only manually approved
+const AUTO_POST_MAX_AGE_DAYS = 7;
+
+/**
+ * Check if a review is recent enough for auto-posting
+ */
+function isReviewRecentEnough(reviewDate: Date, maxAgeDays: number = AUTO_POST_MAX_AGE_DAYS): boolean {
+  const now = new Date();
+  const ageInMs = now.getTime() - reviewDate.getTime();
+  const ageInDays = ageInMs / (1000 * 60 * 60 * 24);
+  return ageInDays <= maxAgeDays;
+}
+
+export async function getResponse(responseId: string, businessId: string) {
   const response = await prisma.response.findFirst({
-    where: { id: responseId, dealerId },
+    where: { id: responseId, businessId },
     include: {
       review: true,
     },
   });
 
   if (!response) {
-    throw new Error('Response not found');
+    throw new NotFoundError('Response');
   }
 
   return response;
@@ -18,15 +33,15 @@ export async function getResponse(responseId: string, dealerId: string) {
 
 export async function updateResponse(
   responseId: string,
-  dealerId: string,
+  businessId: string,
   data: { finalText?: string }
 ) {
   const response = await prisma.response.findFirst({
-    where: { id: responseId, dealerId },
+    where: { id: responseId, businessId },
   });
 
   if (!response) {
-    throw new Error('Response not found');
+    throw new NotFoundError('Response');
   }
 
   return prisma.response.update({
@@ -39,20 +54,20 @@ export async function updateResponse(
 
 export async function approveResponse(
   responseId: string,
-  dealerId: string,
+  businessId: string,
   approvedBy: string
 ) {
   const response = await prisma.response.findFirst({
-    where: { id: responseId, dealerId },
+    where: { id: responseId, businessId },
     include: { review: true },
   });
 
   if (!response) {
-    throw new Error('Response not found');
+    throw new NotFoundError('Response');
   }
 
   if (response.status !== ResponseStatus.DRAFT) {
-    throw new Error('Response is not in draft status');
+    throw new ValidationError('Response is not in draft status');
   }
 
   const [updatedResponse] = await prisma.$transaction([
@@ -76,13 +91,13 @@ export async function approveResponse(
 
 export async function createResponse(
   reviewId: string,
-  dealerId: string,
+  businessId: string,
   generatedText: string
 ) {
   const review = await prisma.review.findFirst({
-    where: { id: reviewId, dealerId },
+    where: { id: reviewId, businessId },
     include: {
-      dealer: {
+      business: {
         select: {
           autoPostEnabled: true,
           autoPostThreshold: true,
@@ -93,13 +108,25 @@ export async function createResponse(
   });
 
   if (!review) {
-    throw new Error('Review not found');
+    throw new NotFoundError('Review');
   }
 
   // Determine if this response should be auto-approved
-  const isNegative = review.rating !== null && review.rating <= review.dealer.negativeThreshold;
-  const isAboveThreshold = review.rating !== null && review.rating >= review.dealer.autoPostThreshold;
-  const shouldAutoApprove = review.dealer.autoPostEnabled && isAboveThreshold && !isNegative;
+  const isNegative = review.rating !== null && review.rating <= review.business.negativeThreshold;
+  const isAboveThreshold = review.rating !== null && review.rating >= review.business.autoPostThreshold;
+
+  // SAFEGUARD: Never auto-post to historical or old reviews
+  // Historical reviews are those imported during first sync
+  // Old reviews are those older than AUTO_POST_MAX_AGE_DAYS
+  const isEligibleForAutoPost =
+    !review.isHistorical &&
+    isReviewRecentEnough(review.reviewDate);
+
+  const shouldAutoApprove =
+    review.business.autoPostEnabled &&
+    isAboveThreshold &&
+    !isNegative &&
+    isEligibleForAutoPost;
 
   const existing = await prisma.response.findUnique({
     where: { reviewId },
@@ -131,7 +158,7 @@ export async function createResponse(
   const newResponse = await prisma.response.create({
     data: {
       reviewId,
-      dealerId,
+      businessId,
       generatedText,
       finalText: shouldAutoApprove ? generatedText : null,
       status: shouldAutoApprove ? ResponseStatus.APPROVED : ResponseStatus.DRAFT,

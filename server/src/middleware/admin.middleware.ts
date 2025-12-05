@@ -6,7 +6,7 @@ export function requireAdmin(
   res: Response,
   next: NextFunction
 ): void {
-  if (!req.dealer?.isAdmin) {
+  if (!req.business?.isAdmin) {
     res.status(403).json({ error: 'Admin access required' });
     return;
   }

@@ -88,15 +88,15 @@ Most competitors (Podium, Birdeye, Reputation.com) are monitoring tools with tem
 
 ### Color Palette
 
-| Color | Hex | Usage |
-|-------|-----|-------|
-| **Sentri Blue** | `#1E3A5F` | Primary brand, CTAs, interactive elements |
-| **Guardian Navy** | `#0F2340` | Dark backgrounds, headers, navigation |
-| **White** | `#FFFFFF` | Content backgrounds, cards |
-| **Success Green** | `#10B981` | Positive states, completed items, 4-5 star reviews |
-| **Warning Amber** | `#F59E0B` | Pending states, items needing attention |
-| **Alert Red** | `#EF4444` | Negative reviews (1-2 stars), errors |
-| **Neutral Gray** | `#6B7280` | Secondary text, subtle elements |
+| Color             | Hex         | Usage                                             |
+|-------------------|-------------|---------------------------------------------------|
+| **Sentri Blue**   | `#1E3A5F`   | Primary brand, CTAs, interactive elements         |
+| **Guardian Navy** | `#0F2340`   | Dark backgrounds, headers, navigation             |
+| **White**         | `#FFFFFF`   | Content backgrounds, cards                        |
+| **Success Green** | `#10B981`   | Positive states, completed items, 4-5 star reviews |
+| **Warning Amber** | `#F59E0B`   | Pending states, items needing attention           |
+| **Alert Red**     | `#EF4444`   | Negative reviews (1-2 stars), errors              |
+| **Neutral Gray**  | `#6B7280`   | Secondary text, subtle elements                   |
 
 ### Typography
 
@@ -107,13 +107,13 @@ Most competitors (Podium, Birdeye, Reputation.com) are monitoring tools with tem
 
 ### The Feeling We Want to Create
 
-| Feel | Not |
-|------|-----|
-| Protected | Anxious |
-| In control | Overwhelmed |
-| Professional | Scrambling |
-| Confident | Uncertain |
-| Relieved | Burdened |
+| Feel         | Not         |
+|--------------|-------------|
+| Protected    | Anxious     |
+| In control   | Overwhelmed |
+| Professional | Scrambling  |
+| Confident    | Uncertain   |
+| Relieved     | Burdened    |
 
 ---
 
@@ -234,12 +234,12 @@ Design should include space for an "Insights" section, even if minimal at launch
 - [Future] Insight card: "This week: customers mentioned 'service' 4x"
 
 #### Stats Cards
-| Stat | Notes |
-|------|-------|
-| Total Reviews | Neutral styling |
-| New Reviews | **Urgency styling if > 0** (amber glow, badge, pulse) |
-| Responded | Success styling |
-| Avg Rating | Show as X.X format |
+| Stat           | Notes                                                   |
+|----------------|---------------------------------------------------------|
+| Total Reviews  | Neutral styling                                         |
+| New Reviews    | **Urgency styling if > 0** (amber glow, badge, pulse)   |
+| Responded      | Success styling                                         |
+| Avg Rating     | Show as X.X format                                      |
 
 **Future enhancement:** Trend indicators (↑ 2 from last week)
 

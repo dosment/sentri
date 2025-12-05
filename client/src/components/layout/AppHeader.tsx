@@ -1,14 +1,14 @@
 interface AppHeaderProps {
   pageTitle: string
-  dealerName: string
+  businessName: string
 }
 
-export function AppHeader({ pageTitle, dealerName }: AppHeaderProps) {
-  // Truncate long dealer names
+export function AppHeader({ pageTitle, businessName }: AppHeaderProps) {
+  // Truncate long business names
   const maxLength = 30
-  const displayName = dealerName.length > maxLength
-    ? `${dealerName.slice(0, maxLength)}...`
-    : dealerName
+  const displayName = businessName.length > maxLength
+    ? `${businessName.slice(0, maxLength)}...`
+    : businessName
 
   return (
     <header className="sticky top-0 z-30 bg-white border-b border-gray-200">
@@ -30,10 +30,10 @@ export function AppHeader({ pageTitle, dealerName }: AppHeaderProps) {
               <span>Monitoring</span>
             </div>
 
-            {/* Dealer name */}
+            {/* Business name */}
             <span
               className="text-sm text-gray-700 font-medium max-w-[200px] truncate"
-              title={dealerName}
+              title={businessName}
             >
               {displayName}
             </span>

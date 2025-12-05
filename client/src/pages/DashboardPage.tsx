@@ -2,16 +2,17 @@ import { useState, useCallback } from 'react'
 import { AppShell } from '@/components/layout/AppShell'
 import { ActionBar } from '@/components/dashboard/ActionBar'
 import { AllCaughtUp } from '@/components/dashboard/AllCaughtUp'
+import { ReportingStats } from '@/components/dashboard/ReportingStats'
 import { ReviewList } from '@/components/reviews/ReviewList'
 import { OnboardingChecklist } from '@/components/onboarding/OnboardingChecklist'
-import type { Dealer } from '@/api/auth'
+import type { Business } from '@/api/auth'
 
 interface DashboardPageProps {
-  dealer: Dealer
+  business: Business
   onLogout: () => void
 }
 
-export function DashboardPage({ dealer, onLogout }: DashboardPageProps) {
+export function DashboardPage({ business, onLogout }: DashboardPageProps) {
   const [reviewStats, setReviewStats] = useState({ needsAttention: 0, total: 0 })
   const [statsLoaded, setStatsLoaded] = useState(false)
 
@@ -29,13 +30,18 @@ export function DashboardPage({ dealer, onLogout }: DashboardPageProps) {
 
   return (
     <AppShell
-      dealerName={dealer.name}
+      businessName={business.name}
       pageTitle="Dashboard"
       newReviewCount={reviewStats.needsAttention}
       onLogout={onLogout}
     >
       {/* Onboarding Checklist - only shows if not complete */}
       <OnboardingChecklist />
+
+      {/* Reporting Stats */}
+      <div className="mb-6">
+        <ReportingStats />
+      </div>
 
       {/* Action Bar - shows when there are reviews needing attention */}
       {statsLoaded && reviewStats.needsAttention > 0 && (
@@ -52,7 +58,7 @@ export function DashboardPage({ dealer, onLogout }: DashboardPageProps) {
           totalResponded={respondedCount}
           responseRate={responseRate}
           avgRating={null}
-          dealerName={dealer.name}
+          businessName={business.name}
         />
       )}
 

@@ -7,18 +7,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Dealer {
-  id                   String   @id @default(uuid())
-  email                String   @unique
+model Business {
+  id                   String       @id @default(uuid())
+  email                String       @unique
   passwordHash         String?
   name                 String
   phone                String?
-  plan                 Plan     @default(STARTER)
+  businessType         BusinessType @default(OTHER)
+  plan                 Plan         @default(STARTER)
   voiceProfile         Json?
-  isAdmin              Boolean  @default(false)
-  customInstructions   String?  @db.Text
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
+  isAdmin              Boolean      @default(false)
+  customInstructions   String?      @db.Text
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime     @updatedAt
 
   // Response settings
   autoPostEnabled      Boolean  @default(false)
@@ -28,6 +29,13 @@ model Dealer {
   signOffName          String?
   signOffTitle         String?
 
+  // Review display settings
+  hideOldReviews          Boolean  @default(false)  // Hide reviews older than threshold
+  oldReviewThresholdDays  Int      @default(30)     // Days after which reviews are hidden
+
+  // Google Review Link for QR code generation
+  googleReviewUrl      String?
+
   platformConnections PlatformConnection[]
   reviews             Review[]
   responses           Response[]
@@ -35,7 +43,7 @@ model Dealer {
 
 model PlatformConnection {
   id                String    @id @default(uuid())
-  dealerId          String
+  businessId        String
   platform          Platform
   platformAccountId String
   accessToken       String
@@ -45,14 +53,14 @@ model PlatformConnection {
   lastSyncAt        DateTime?
   createdAt         DateTime  @default(now())
 
-  dealer Dealer @relation(fields: [dealerId], references: [id], onDelete: Cascade)
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
 
-  @@unique([dealerId, platform])
+  @@unique([businessId, platform])
 }
 
 model Review {
   id               String          @id @default(uuid())
-  dealerId         String
+  businessId       String
   platform         Platform
   platformReviewId String          @db.VarChar(500)
   reviewerName     String          @db.VarChar(200)
@@ -61,20 +69,21 @@ model Review {
   reviewText       String
   reviewDate       DateTime
   status           ReviewStatus    @default(NEW)
+  isHistorical     Boolean         @default(false) // True for reviews imported on first sync
   createdAt        DateTime        @default(now())
 
-  dealer   Dealer    @relation(fields: [dealerId], references: [id], onDelete: Cascade)
+  business Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
   response Response?
 
   @@unique([platform, platformReviewId])
-  @@index([dealerId, status])
-  @@index([dealerId, reviewDate])
+  @@index([businessId, status])
+  @@index([businessId, reviewDate])
 }
 
 model Response {
   id            String         @id @default(uuid())
   reviewId      String         @unique
-  dealerId      String
+  businessId    String
   generatedText String
   finalText     String?
   status        ResponseStatus @default(DRAFT)
@@ -84,10 +93,25 @@ model Response {
   postError     String?
   createdAt     DateTime       @default(now())
 
-  review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
-  dealer Dealer @relation(fields: [dealerId], references: [id], onDelete: Cascade)
+  review   Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
 
-  @@index([dealerId, status])
+  @@index([businessId, status])
+}
+
+enum BusinessType {
+  RESTAURANT
+  SALON_SPA
+  MEDICAL_OFFICE
+  DENTAL_OFFICE
+  LEGAL_SERVICES
+  HOME_SERVICES
+  RETAIL
+  AUTOMOTIVE
+  FITNESS
+  HOSPITALITY
+  REAL_ESTATE
+  OTHER
 }
 
 enum Plan {
@@ -99,8 +123,8 @@ enum Plan {
 enum Platform {
   GOOGLE
   FACEBOOK
-  DEALERRATER
   YELP
+  TRIPADVISOR
 }
 
 enum ReviewStatus {
@@ -120,4 +144,32 @@ enum ResponseStatus {
 enum Recommendation {
   RECOMMENDS
   DOESNT_RECOMMEND
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  LOGIN
+  LOGOUT
+  ADMIN_VIEW
+  ADMIN_UPDATE
+}
+
+model AuditLog {
+  id         String      @id @default(uuid())
+  actor      String      // email of user performing action
+  actorType  String      @default("user") // "user", "admin", "system"
+  action     AuditAction
+  entity     String      // "Business", "Review", "Response", etc.
+  entityId   String?
+  before     Json?       // state before change
+  after      Json?       // state after change
+  metadata   Json?       // additional context (IP, user agent, etc.)
+  timestamp  DateTime    @default(now())
+
+  @@index([entity, entityId])
+  @@index([actor])
+  @@index([timestamp])
+  @@index([action])
 }

@@ -2,15 +2,15 @@ import { useState, useEffect } from 'react'
 import { AppShell } from '@/components/layout/AppShell'
 import { Card } from '@/components/ui/Card'
 import { getReviewStats, type ReviewStats } from '@/api/reviews'
-import type { Dealer } from '@/api/auth'
+import type { Business } from '@/api/auth'
 import { ChartBarIcon } from '@heroicons/react/24/outline'
 
 interface ReportsPageProps {
-  dealer: Dealer
+  business: Business
   onLogout: () => void
 }
 
-export function ReportsPage({ dealer, onLogout }: ReportsPageProps) {
+export function ReportsPage({ business, onLogout }: ReportsPageProps) {
   const [stats, setStats] = useState<ReviewStats | null>(null)
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export function ReportsPage({ dealer, onLogout }: ReportsPageProps) {
 
   return (
     <AppShell
-      dealerName={dealer.name}
+      businessName={business.name}
       pageTitle="Reports"
       newReviewCount={newReviewCount}
       onLogout={onLogout}

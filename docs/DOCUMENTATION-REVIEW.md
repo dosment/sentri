@@ -39,37 +39,37 @@
 
 ### The Four Quadrants
 
-| Quadrant | Purpose | Question Answered |
-|----------|---------|-------------------|
-| **Tutorials** | Learning-oriented | "How do I get started?" |
-| **How-to Guides** | Problem-oriented | "How do I solve X?" |
-| **Reference** | Information-oriented | "What are the details?" |
-| **Explanation** | Understanding-oriented | "Why is it this way?" |
+| Quadrant          | Purpose                  | Question Answered        |
+|-------------------|--------------------------|--------------------------|
+| **Tutorials**     | Learning-oriented        | "How do I get started?"  |
+| **How-to Guides** | Problem-oriented         | "How do I solve X?"      |
+| **Reference**     | Information-oriented     | "What are the details?"  |
+| **Explanation**   | Understanding-oriented   | "Why is it this way?"    |
 
 ### Current File Classification
 
-| File | Primary Quadrant | Secondary | Issues |
-|------|------------------|-----------|--------|
-| `README.md` | Reference | — | Too long, mixes overview with setup |
-| `ARCHITECTURE.md` | Reference + Explanation | — | **Mixed modes** — combines schema reference with architectural decisions |
-| `BUSINESS-PLAN.md` | Explanation | — | Correct placement, but not technical docs |
-| `BRAND-GUIDELINES.md` | Reference + Explanation | — | **Mixed modes** — combines brand rules with rationale |
-| `BRAND-ASSETS-SPEC.md` | Reference | — | Correct, pure technical spec |
-| `PLATFORMS.md` | Reference | — | Correct, but incomplete (no request/response examples) |
-| `EDGE-CASES.md` | Explanation | — | Meeting notes, not documentation |
-| `MVP-REVIEW.md` | Explanation | — | Meeting notes, not documentation |
-| `UI-UX-REVIEW.md` | Explanation | — | Meeting notes, not documentation |
-| `AI-ARCHITECTURE-REVIEW.md` | Explanation | — | Review notes, not documentation |
-| `TECHNICAL-DEBT.md` | Reference | — | Correct, issue tracking format |
+| File                        | Primary Quadrant         | Secondary  | Issues                                                                  |
+|-----------------------------|--------------------------|------------|-------------------------------------------------------------------------|
+| `README.md`                 | Reference                | —          | Too long, mixes overview with setup                                     |
+| `ARCHITECTURE.md`           | Reference + Explanation  | —          | **Mixed modes** — combines schema reference with architectural decisions |
+| `BUSINESS-PLAN.md`          | Explanation              | —          | Correct placement, but not technical docs                               |
+| `BRAND-GUIDELINES.md`       | Reference + Explanation  | —          | **Mixed modes** — combines brand rules with rationale                   |
+| `BRAND-ASSETS-SPEC.md`      | Reference                | —          | Correct, pure technical spec                                            |
+| `PLATFORMS.md`              | Reference                | —          | Correct, but incomplete (no request/response examples)                  |
+| `EDGE-CASES.md`             | Explanation              | —          | Meeting notes, not documentation                                        |
+| `MVP-REVIEW.md`             | Explanation              | —          | Meeting notes, not documentation                                        |
+| `UI-UX-REVIEW.md`           | Explanation              | —          | Meeting notes, not documentation                                        |
+| `AI-ARCHITECTURE-REVIEW.md` | Explanation              | —          | Review notes, not documentation                                         |
+| `TECHNICAL-DEBT.md`         | Reference                | —          | Correct, issue tracking format                                          |
 
 ### What's Missing
 
-| Quadrant | Status | Critical Gap? |
-|----------|--------|---------------|
-| **Tutorials** | MISSING | YES — No "Getting Started" guide |
-| **How-to Guides** | MISSING | YES — No problem-solving guides |
-| **Reference** | Partial | API docs incomplete, no env var reference |
-| **Explanation** | Over-represented | Too many meeting notes masquerading as docs |
+| Quadrant          | Status            | Critical Gap?                          |
+|-------------------|-------------------|----------------------------------------|
+| **Tutorials**     | MISSING           | YES — No "Getting Started" guide       |
+| **How-to Guides** | MISSING           | YES — No problem-solving guides        |
+| **Reference**     | Partial           | API docs incomplete, no env var reference |
+| **Explanation**   | Over-represented  | Too many meeting notes masquerading as docs |
 
 ---
 
@@ -131,14 +131,14 @@
 
 **Fix:** Split into focused documents:
 
-| Current Section | New Location |
-|-----------------|--------------|
-| Architecture Principles | `/docs/explanation/architecture-decisions.md` |
-| Database Schema | `/docs/reference/database-schema.md` |
-| API Endpoints | `/docs/reference/api-endpoints.md` |
-| Environment Variables | `/docs/reference/environment-variables.md` |
-| Dockerfile & Deployment | `/docs/guides/deployment.md` |
-| Tailwind Config | `/docs/reference/frontend-config.md` |
+| Current Section          | New Location                                      |
+|--------------------------|---------------------------------------------------|
+| Architecture Principles  | `/docs/explanation/architecture-decisions.md`     |
+| Database Schema          | `/docs/reference/database-schema.md`              |
+| API Endpoints            | `/docs/reference/api-endpoints.md`                |
+| Environment Variables    | `/docs/reference/environment-variables.md`        |
+| Dockerfile & Deployment  | `/docs/guides/deployment.md`                      |
+| Tailwind Config          | `/docs/reference/frontend-config.md`              |
 
 ---
 
@@ -247,9 +247,9 @@ Retrieve all reviews for the authenticated dealer.
 **Authentication:** Required (Bearer token)
 
 **Query Parameters:**
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| status | string | Filter by status: NEW, PENDING_RESPONSE, RESPONDED |
+| Parameter  | Type    | Description                                      |
+|------------|---------|--------------------------------------------------|
+| status     | string  | Filter by status: NEW, PENDING_RESPONSE, RESPONDED |
 
 **Response:**
 ```json
@@ -269,10 +269,10 @@ Retrieve all reviews for the authenticated dealer.
 ```
 
 **Error Codes:**
-| Code | Description |
-|------|-------------|
-| 401 | Unauthorized — invalid or missing token |
-| 500 | Server error |
+| Code  | Description                              |
+|-------|------------------------------------------|
+| 401   | Unauthorized — invalid or missing token  |
+| 500   | Server error                             |
 ```
 
 ---
@@ -299,12 +299,12 @@ But no documentation of:
 ```markdown
 # Environment Variables
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `DATABASE_URL` | Yes | — | PostgreSQL connection string |
-| `JWT_SECRET` | Yes | — | Secret for signing JWTs. Min 32 chars. |
-| `GEMINI_API_KEY` | Yes | — | Google AI API key. Get from [AI Studio](https://aistudio.google.com/) |
-| `NODE_ENV` | No | `development` | `development`, `production`, `test` |
+| Variable          | Required  | Default       | Description                                                    |
+|-------------------|-----------|---------------|----------------------------------------------------------------|
+| `DATABASE_URL`    | Yes       | —             | PostgreSQL connection string                                   |
+| `JWT_SECRET`      | Yes       | —             | Secret for signing JWTs. Min 32 chars.                         |
+| `GEMINI_API_KEY`  | Yes       | —             | Google AI API key. Get from [AI Studio](https://aistudio.google.com/) |
+| `NODE_ENV`        | No        | `development` | `development`, `production`, `test`                            |
 ```
 
 ---
@@ -401,28 +401,28 @@ This tells me *what* but not *how*.
 
 ### P0 — Blocking (Before Pilot)
 
-| Item | Owner | Effort |
-|------|-------|--------|
-| Create `tutorials/getting-started.md` | Dan | 2 hours |
-| Create `reference/environment-variables.md` | Dan | 1 hour |
-| Split `ARCHITECTURE.md` into focused docs | Dan | 3 hours |
+| Item                                          | Owner  | Effort   |
+|-----------------------------------------------|--------|----------|
+| Create `tutorials/getting-started.md`         | Dan    | 2 hours  |
+| Create `reference/environment-variables.md`   | Dan    | 1 hour   |
+| Split `ARCHITECTURE.md` into focused docs     | Dan    | 3 hours  |
 
 ### P1 — Important (Before Production)
 
-| Item | Owner | Effort |
-|------|-------|--------|
-| Create `guides/add-new-platform.md` | Dan | 2 hours |
-| Expand `reference/api-endpoints.md` with examples | Dan | 3 hours |
-| Move meeting notes to `/archive/` | Dan | 30 min |
-| Trim README to 30 lines | Dan | 30 min |
+| Item                                                   | Owner  | Effort   |
+|--------------------------------------------------------|--------|----------|
+| Create `guides/add-new-platform.md`                    | Dan    | 2 hours  |
+| Expand `reference/api-endpoints.md` with examples      | Dan    | 3 hours  |
+| Move meeting notes to `/archive/`                      | Dan    | 30 min   |
+| Trim README to 30 lines                                | Dan    | 30 min   |
 
 ### P2 — Nice to Have
 
-| Item | Owner | Effort |
-|------|-------|--------|
-| Create ADR templates and convert decisions | Dan | 2 hours |
-| Add automated schema generation | Dan | 4 hours |
-| Create `guides/debug-failed-responses.md` | Dan | 1 hour |
+| Item                                            | Owner  | Effort   |
+|-------------------------------------------------|--------|----------|
+| Create ADR templates and convert decisions      | Dan    | 2 hours  |
+| Add automated schema generation                 | Dan    | 4 hours  |
+| Create `guides/debug-failed-responses.md`       | Dan    | 1 hour   |
 
 ---
 

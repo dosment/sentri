@@ -4,10 +4,10 @@ interface AllCaughtUpProps {
   totalResponded: number
   responseRate: number
   avgRating: number | null
-  dealerName: string
+  businessName: string
 }
 
-export function AllCaughtUp({ totalResponded, responseRate, avgRating, dealerName }: AllCaughtUpProps) {
+export function AllCaughtUp({ totalResponded, responseRate, avgRating, businessName }: AllCaughtUpProps) {
   return (
     <div className="flex flex-col items-center justify-center py-16 px-4">
       <div className="w-16 h-16 rounded-full bg-success/10 flex items-center justify-center mb-6">
@@ -40,7 +40,7 @@ export function AllCaughtUp({ totalResponded, responseRate, avgRating, dealerNam
       </div>
 
       <p className="text-gray-600">
-        Great work, {dealerName}.
+        Great work, {businessName}.
       </p>
     </div>
   )

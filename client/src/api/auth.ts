@@ -1,12 +1,27 @@
 import { api } from './client'
 
-export interface Dealer {
+export type BusinessType =
+  | 'RESTAURANT'
+  | 'SALON_SPA'
+  | 'MEDICAL_OFFICE'
+  | 'DENTAL_OFFICE'
+  | 'LEGAL_SERVICES'
+  | 'HOME_SERVICES'
+  | 'RETAIL'
+  | 'AUTOMOTIVE'
+  | 'FITNESS'
+  | 'HOSPITALITY'
+  | 'REAL_ESTATE'
+  | 'OTHER'
+
+export interface Business {
   id: string
   email: string
   name: string
   phone?: string
+  businessType: BusinessType
   plan: 'STARTER' | 'PROFESSIONAL' | 'ENTERPRISE'
-  autoApproveThreshold: number
+  googleReviewUrl?: string | null
   createdAt: string
 }
 
@@ -18,7 +33,7 @@ export interface AdminUser {
 }
 
 export interface AuthResult {
-  dealer: Dealer
+  business: Business
   token: string
 }
 
@@ -31,19 +46,21 @@ export async function login(email: string, password: string): Promise<AuthResult
 export async function register(
   email: string,
   password: string,
-  name: string
+  name: string,
+  businessType?: BusinessType
 ): Promise<AuthResult> {
   const result = await api.post<AuthResult>('/auth/register', {
     email,
     password,
     name,
+    businessType,
   })
   api.setToken(result.token)
   return result
 }
 
-export async function getMe(): Promise<Dealer> {
-  return api.get<Dealer>('/auth/me')
+export async function getMe(): Promise<Business> {
+  return api.get<Business>('/auth/me')
 }
 
 export function logout() {
@@ -78,16 +95,16 @@ export interface AdminAuthResult {
 }
 
 export async function adminLogin(email: string, password: string): Promise<AdminAuthResult> {
-  const result = await api.post<{ dealer: AdminUser; token: string }>('/auth/login', { email, password })
+  const result = await api.post<{ business: AdminUser; token: string }>('/auth/login', { email, password })
 
   // Verify this user is actually an admin
-  if (!result.dealer.isAdmin) {
+  if (!result.business.isAdmin) {
     throw new Error('Access denied. Admin privileges required.')
   }
 
   api.setToken(result.token)
   localStorage.setItem('sentri_admin_session', 'true')
-  return { admin: result.dealer, token: result.token }
+  return { admin: result.business, token: result.token }
 }
 
 export async function getAdminMe(): Promise<AdminUser> {

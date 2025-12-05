@@ -19,14 +19,14 @@ export function ReviewList({ onStatsChange }: ReviewListProps) {
     setLoading(true)
     try {
       // Always fetch all reviews, then filter client-side for "needs attention"
-      const data = await getReviews()
-      setReviews(data)
+      const response = await getReviews()
+      setReviews(response.data)
 
       // Calculate stats
-      const needsAttention = data.filter(
+      const needsAttention = response.data.filter(
         r => r.status === 'NEW' || r.status === 'PENDING_RESPONSE'
       ).length
-      onStatsChange?.({ needsAttention, total: data.length })
+      onStatsChange?.({ needsAttention, total: response.data.length })
     } catch (error) {
       console.error('Failed to fetch reviews:', error)
     } finally {

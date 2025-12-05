@@ -7,13 +7,13 @@
 
 ## Brand Quick Reference
 
-| Element | Value |
-|---------|-------|
-| **Name** | Sentri |
-| **Primary Color** | `#1E3A5F` |
-| **Secondary Color** | `#0F2340` |
-| **Font** | Inter |
-| **Domain** | sentri.io |
+| Element             | Value      |
+|---------------------|------------|
+| **Name**            | Sentri     |
+| **Primary Color**   | `#1E3A5F`  |
+| **Secondary Color** | `#0F2340`  |
+| **Font**            | Inter      |
+| **Domain**          | sentri.io  |
 
 See [BRAND-GUIDELINES.md](BRAND-GUIDELINES.md) for complete brand documentation.
 
@@ -73,16 +73,16 @@ See [BRAND-GUIDELINES.md](BRAND-GUIDELINES.md) for complete brand documentation.
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|------------|
-| **Backend** | Node.js 20, Express, TypeScript |
-| **Frontend** | React 18, TypeScript, Tailwind CSS |
-| **Database** | PostgreSQL 15 (Prisma ORM) |
-| **Queue** | Redis 7, BullMQ |
-| **AI** | Gemini API (Google) |
-| **Hosting** | Railway (MVP), AWS (scale) |
-| **SMS** | Twilio |
-| **Email** | SendGrid |
+| Layer        | Technology                          |
+|--------------|-------------------------------------|
+| **Backend**  | Node.js 20, Express, TypeScript     |
+| **Frontend** | React 18, TypeScript, Tailwind CSS  |
+| **Database** | PostgreSQL 15 (Prisma ORM)          |
+| **Queue**    | Redis 7, BullMQ                     |
+| **AI**       | Gemini API (Google)                 |
+| **Hosting**  | Railway (MVP), AWS (scale)          |
+| **SMS**      | Twilio                              |
+| **Email**    | SendGrid                            |
 
 ---
 
@@ -378,12 +378,12 @@ module.exports = {
 
 ### Railway (MVP)
 
-| Service | Type | Est. Cost |
-|---------|------|-----------|
-| API Server | Web Service | $5-20/mo |
-| Worker | Worker Service | $5-20/mo |
-| PostgreSQL | Database | $5-20/mo |
-| Redis | Database | $5-10/mo |
+| Service    | Type           | Est. Cost |
+|------------|----------------|-----------|
+| API Server | Web Service    | $5-20/mo  |
+| Worker     | Worker Service | $5-20/mo  |
+| PostgreSQL | Database       | $5-20/mo  |
+| Redis      | Database       | $5-10/mo  |
 
 ### Dockerfile
 

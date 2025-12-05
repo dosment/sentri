@@ -1,4 +1,4 @@
-import { PrismaClient, Platform, ReviewStatus } from '@prisma/client';
+import { PrismaClient, Platform, ReviewStatus, BusinessType } from '@prisma/client';
 import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
@@ -6,26 +6,29 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('Seeding database...');
 
-  // Create demo dealer
+  // Create demo business
   const passwordHash = await bcrypt.hash('demo1234', 12);
 
-  const dealer = await prisma.dealer.upsert({
+  const business = await prisma.business.upsert({
     where: { email: 'demo@example.com' },
     update: { isAdmin: true },
     create: {
       email: 'demo@example.com',
       passwordHash,
-      name: 'Westside Auto Group',
+      name: 'Sunrise Café',
       phone: '555-123-4567',
+      businessType: BusinessType.RESTAURANT,
       isAdmin: true,
+      responseTone: 'friendly',
+      signOffName: 'The Sunrise Team',
       voiceProfile: {
-        tone: 'friendly and professional',
-        signoff: 'The Westside Auto Team',
+        tone: 'warm and welcoming',
+        style: 'conversational',
       },
     },
   });
 
-  console.log(`Created dealer: ${dealer.name}`);
+  console.log(`Created business: ${business.name}`);
 
   // Create mock reviews
   const reviews = [
@@ -34,7 +37,7 @@ async function main() {
       platformReviewId: 'google-review-001',
       reviewerName: 'Sarah M.',
       rating: 5,
-      reviewText: 'Absolutely fantastic experience! Marcus in sales was incredibly helpful and not pushy at all. Got a great deal on my new Accord. The whole process took about 2 hours from test drive to driving off the lot. Highly recommend!',
+      reviewText: 'Absolutely fantastic brunch spot! The avocado toast is to die for and the coffee is some of the best in town. Service was quick and friendly. Will definitely be back!',
       reviewDate: new Date('2024-11-28'),
       status: ReviewStatus.NEW,
     },
@@ -43,7 +46,7 @@ async function main() {
       platformReviewId: 'google-review-002',
       reviewerName: 'James R.',
       rating: 4,
-      reviewText: 'Good dealership overall. Service department is quick and efficient. Only reason for 4 stars is the waiting area could use some updating - the coffee machine was broken both times I visited.',
+      reviewText: 'Good food and nice atmosphere. Only reason for 4 stars is the wait time on weekends can be long. Wish they took reservations.',
       reviewDate: new Date('2024-11-25'),
       status: ReviewStatus.NEW,
     },
@@ -52,7 +55,7 @@ async function main() {
       platformReviewId: 'google-review-003',
       reviewerName: 'Michelle T.',
       rating: 2,
-      reviewText: 'Disappointed with my recent service visit. Brought my car in for an oil change and it took over 3 hours even with an appointment. No one communicated the delay. When I asked, they seemed surprised I was still waiting.',
+      reviewText: 'Disappointed with my recent visit. Ordered the eggs benedict and it arrived cold. When I mentioned it to the server, they just shrugged. No offer to replace it or anything.',
       reviewDate: new Date('2024-11-22'),
       status: ReviewStatus.NEW,
     },
@@ -61,7 +64,7 @@ async function main() {
       platformReviewId: 'fb-review-001',
       reviewerName: 'David Chen',
       rating: 5,
-      reviewText: 'Best car buying experience I have ever had! Everyone was so friendly and they worked with my budget. Will definitely be back for my next car.',
+      reviewText: 'Best pancakes in the city! So fluffy and the maple syrup is real. Love the cozy vibe here.',
       reviewDate: new Date('2024-11-20'),
       status: ReviewStatus.NEW,
     },
@@ -70,7 +73,7 @@ async function main() {
       platformReviewId: 'google-review-004',
       reviewerName: 'Anonymous',
       rating: 1,
-      reviewText: 'Terrible. Bait and switch pricing. Online price was different from what they tried to charge me. Walked out and bought elsewhere. Stay away.',
+      reviewText: 'Terrible experience. Waited 45 minutes for food that never came. Asked for manager, none available. Never coming back.',
       reviewDate: new Date('2024-11-18'),
       status: ReviewStatus.NEW,
     },
@@ -79,7 +82,7 @@ async function main() {
       platformReviewId: 'fb-review-002',
       reviewerName: 'Lisa Park',
       rating: 5,
-      reviewText: 'Shoutout to Tony in the service department! He went above and beyond to get my car fixed same-day when I was in a bind. This is why I keep coming back.',
+      reviewText: 'The pastries here are incredible! Everything is made fresh daily. The almond croissant is my weakness.',
       reviewDate: new Date('2024-11-15'),
       status: ReviewStatus.NEW,
     },
@@ -88,7 +91,7 @@ async function main() {
       platformReviewId: 'google-review-005',
       reviewerName: 'Robert K.',
       rating: 3,
-      reviewText: 'Average experience. Car was fine, price was okay. Nothing special but nothing terrible either.',
+      reviewText: 'Decent food, nothing special. A bit overpriced for what you get. Coffee was good though.',
       reviewDate: new Date('2024-11-12'),
       status: ReviewStatus.NEW,
     },
@@ -97,7 +100,7 @@ async function main() {
       platformReviewId: 'google-review-006',
       reviewerName: 'Emma Wilson',
       rating: 5,
-      reviewText: 'Just picked up my new CRV and I am in love! The team made everything so easy. Special thanks to Amanda for answering all my questions about the hybrid system.',
+      reviewText: 'My new favorite café! The staff remembers my order and always greets me with a smile. The homemade granola bowl is amazing.',
       reviewDate: new Date('2024-11-10'),
       status: ReviewStatus.NEW,
     },
@@ -114,7 +117,7 @@ async function main() {
       update: {},
       create: {
         ...review,
-        dealerId: dealer.id,
+        businessId: business.id,
       },
     });
   }

@@ -9,14 +9,14 @@
 
 ## Quick Reference
 
-| Asset | Priority | Status | Sizes |
-|-------|----------|--------|-------|
-| Wordmark Logo | P0 | Needed | SVG + PNG @1x, 2x, 3x |
-| Icon Mark | P0 | Needed | 16, 32, 64, 128, 192, 512px |
-| Favicon | P0 | Needed | ICO (16, 32, 48) + PNG (180, 192, 512) |
-| OG Image | P1 | Needed | 1200×630px |
-| Social Avatars | P1 | Needed | 400×400px |
-| Email Header | P2 | Needed | 600×100px |
+| Asset           | Priority  | Status  | Sizes                                   |
+|-----------------|-----------|---------|----------------------------------------|
+| Wordmark Logo   | P0        | Needed  | SVG + PNG @1x, 2x, 3x                  |
+| Icon Mark       | P0        | Needed  | 16, 32, 64, 128, 192, 512px            |
+| Favicon         | P0        | Needed  | ICO (16, 32, 48) + PNG (180, 192, 512) |
+| OG Image        | P1        | Needed  | 1200×630px                             |
+| Social Avatars  | P1        | Needed  | 400×400px                              |
+| Email Header    | P2        | Needed  | 600×100px                              |
 
 ---
 
@@ -32,23 +32,23 @@ Clean, modern wordmark spelling "Sentri" in a professional sans-serif. Evokes vi
 
 ### Color Variants
 
-| Variant | Usage | Colors |
-|---------|-------|--------|
-| **Primary** | Light backgrounds | Sentri Blue (#1E3A5F) |
-| **Reversed** | Dark backgrounds | White (#FFFFFF) |
-| **Monochrome** | Print, single-color | Black (#000000) or White (#FFFFFF) |
+| Variant        | Usage                | Colors                               |
+|----------------|----------------------|--------------------------------------|
+| **Primary**    | Light backgrounds    | Sentri Blue (#1E3A5F)                |
+| **Reversed**   | Dark backgrounds     | White (#FFFFFF)                      |
+| **Monochrome** | Print, single-color  | Black (#000000) or White (#FFFFFF)   |
 
 ### Size Requirements
 
-| Format | Dimensions | Use Case |
-|--------|------------|----------|
-| `sentri-logo-primary.svg` | Scalable | Web, print master |
-| `sentri-logo-primary@1x.png` | 200×50px | Web default |
-| `sentri-logo-primary@2x.png` | 400×100px | Retina web |
-| `sentri-logo-primary@3x.png` | 600×150px | High-DPI mobile |
-| `sentri-logo-white.svg` | Scalable | Dark backgrounds |
-| `sentri-logo-white@1x.png` | 200×50px | Dark backgrounds |
-| `sentri-logo-white@2x.png` | 400×100px | Dark backgrounds |
+| Format                        | Dimensions   | Use Case          |
+|-------------------------------|--------------|-------------------|
+| `sentri-logo-primary.svg`     | Scalable     | Web, print master |
+| `sentri-logo-primary@1x.png`  | 200×50px     | Web default       |
+| `sentri-logo-primary@2x.png`  | 400×100px    | Retina web        |
+| `sentri-logo-primary@3x.png`  | 600×150px    | High-DPI mobile   |
+| `sentri-logo-white.svg`       | Scalable     | Dark backgrounds  |
+| `sentri-logo-white@1x.png`    | 200×50px     | Dark backgrounds  |
+| `sentri-logo-white@2x.png`    | 400×100px    | Dark backgrounds  |
 
 ### Clear Space
 Minimum clear space around logo = height of the letter "S"
@@ -87,23 +87,23 @@ Abstract mark for small sizes where wordmark is illegible. Options to explore:
 
 ### Color Variants
 
-| Variant | Usage |
-|---------|-------|
-| **Full color** | Blue on white, white on blue |
-| **Monochrome** | Single color for any background |
+| Variant         | Usage                            |
+|-----------------|----------------------------------|
+| **Full color**  | Blue on white, white on blue     |
+| **Monochrome**  | Single color for any background  |
 
 ### Size Requirements
 
-| Format | Dimensions | Use Case |
-|--------|------------|----------|
-| `sentri-icon.svg` | Scalable | Master file |
-| `sentri-icon-16.png` | 16×16px | Browser favicon |
-| `sentri-icon-32.png` | 32×32px | Browser favicon @2x |
-| `sentri-icon-64.png` | 64×64px | Desktop icons |
-| `sentri-icon-128.png` | 128×128px | App icons |
-| `sentri-icon-180.png` | 180×180px | Apple touch icon |
-| `sentri-icon-192.png` | 192×192px | Android icon |
-| `sentri-icon-512.png` | 512×512px | PWA icon, app stores |
+| Format                  | Dimensions   | Use Case             |
+|-------------------------|--------------|----------------------|
+| `sentri-icon.svg`       | Scalable     | Master file          |
+| `sentri-icon-16.png`    | 16×16px      | Browser favicon      |
+| `sentri-icon-32.png`    | 32×32px      | Browser favicon @2x  |
+| `sentri-icon-64.png`    | 64×64px      | Desktop icons        |
+| `sentri-icon-128.png`   | 128×128px    | App icons            |
+| `sentri-icon-180.png`   | 180×180px    | Apple touch icon     |
+| `sentri-icon-192.png`   | 192×192px    | Android icon         |
+| `sentri-icon-512.png`   | 512×512px    | PWA icon, app stores |
 
 ---
 
@@ -174,12 +174,12 @@ Social media preview when Sentri URLs are shared.
 
 ### Specifications
 
-| Property | Value |
-|----------|-------|
-| **Dimensions** | 1200×630px |
-| **Format** | PNG or JPG |
-| **File size** | < 300KB |
-| **Background** | Sentri Blue (#1E3A5F) or White |
+| Property        | Value                          |
+|-----------------|--------------------------------|
+| **Dimensions**  | 1200×630px                     |
+| **Format**      | PNG or JPG                     |
+| **File size**   | < 300KB                        |
+| **Background**  | Sentri Blue (#1E3A5F) or White |
 
 ### Content Layout
 ```
@@ -214,12 +214,12 @@ sentri-og-image.png (1200×630px)
 
 ### Platforms & Sizes
 
-| Platform | Size | Format |
-|----------|------|--------|
-| LinkedIn (company) | 400×400px | PNG |
-| Twitter/X | 400×400px | PNG |
-| Facebook | 170×170px (displays as circle) | PNG |
-| Google Business | 250×250px | PNG |
+| Platform            | Size                            | Format  |
+|---------------------|---------------------------------|---------|
+| LinkedIn (company)  | 400×400px                       | PNG     |
+| Twitter/X           | 400×400px                       | PNG     |
+| Facebook            | 170×170px (displays as circle)  | PNG     |
+| Google Business     | 250×250px                       | PNG     |
 
 ### Design Notes
 - Use icon mark, not wordmark (too small)
@@ -239,18 +239,18 @@ sentri-avatar-170.png  (Facebook)
 
 ### Email Header
 
-| Property | Value |
-|----------|-------|
-| **Dimensions** | 600×100px (max width for email) |
-| **Format** | PNG |
-| **Content** | Wordmark logo, centered or left-aligned |
+| Property        | Value                                    |
+|-----------------|------------------------------------------|
+| **Dimensions**  | 600×100px (max width for email)          |
+| **Format**      | PNG                                      |
+| **Content**     | Wordmark logo, centered or left-aligned  |
 
 ### Email Signature Logo
 
-| Property | Value |
-|----------|-------|
-| **Dimensions** | 150×40px |
-| **Format** | PNG |
+| Property        | Value     |
+|-----------------|-----------|
+| **Dimensions**  | 150×40px  |
+| **Format**      | PNG       |
 
 ### Files
 ```
@@ -264,20 +264,20 @@ sentri-email-signature.png (150×40px)
 
 ### Primary Palette
 
-| Color | Hex | RGB | HSL | Pantone |
-|-------|-----|-----|-----|---------|
-| **Sentri Blue** | #1E3A5F | 30, 58, 95 | 214°, 52%, 25% | 289 C (approx) |
-| **Guardian Navy** | #0F2340 | 15, 35, 64 | 216°, 62%, 15% | 289 C Dark |
-| **White** | #FFFFFF | 255, 255, 255 | 0°, 0%, 100% | — |
+| Color              | Hex       | RGB             | HSL              | Pantone         |
+|--------------------|-----------|-----------------|------------------|-----------------|
+| **Sentri Blue**    | #1E3A5F   | 30, 58, 95      | 214°, 52%, 25%   | 289 C (approx)  |
+| **Guardian Navy**  | #0F2340   | 15, 35, 64      | 216°, 62%, 15%   | 289 C Dark      |
+| **White**          | #FFFFFF   | 255, 255, 255   | 0°, 0%, 100%     | —               |
 
 ### Secondary Palette
 
-| Color | Hex | RGB | Usage |
-|-------|-----|-----|-------|
-| **Success Green** | #10B981 | 16, 185, 129 | Positive states |
-| **Warning Amber** | #F59E0B | 245, 158, 11 | Pending states |
-| **Alert Red** | #EF4444 | 239, 68, 68 | Errors, negative |
-| **Neutral Gray** | #6B7280 | 107, 114, 128 | Secondary text |
+| Color              | Hex       | RGB            | Usage            |
+|--------------------|-----------|----------------|------------------|
+| **Success Green**  | #10B981   | 16, 185, 129   | Positive states  |
+| **Warning Amber**  | #F59E0B   | 245, 158, 11   | Pending states   |
+| **Alert Red**      | #EF4444   | 239, 68, 68    | Errors, negative |
+| **Neutral Gray**   | #6B7280   | 107, 114, 128  | Secondary text   |
 
 ### Tailwind CSS Config
 ```javascript
@@ -296,12 +296,12 @@ colors: {
 
 ### Primary: Inter
 
-| Weight | Value | Usage |
-|--------|-------|-------|
-| Regular | 400 | Body text |
-| Medium | 500 | Captions, labels |
-| Semibold | 600 | Emphasis |
-| Bold | 700 | Headings |
+| Weight    | Value  | Usage             |
+|-----------|--------|-------------------|
+| Regular   | 400    | Body text         |
+| Medium    | 500    | Captions, labels  |
+| Semibold  | 600    | Emphasis          |
+| Bold      | 700    | Headings          |
 
 ### Google Fonts Implementation
 ```html

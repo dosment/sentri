@@ -43,9 +43,23 @@ Sentri monitors reviews across Google, Facebook, DealerRater, Yelp, and more —
 
 ### Prerequisites
 
-- **Node.js** 18+
-- **PostgreSQL** 14+ (running locally or via Docker)
+- **Node.js** 20+
+- **PostgreSQL** 15+ (or use Docker Compose below)
 - **Redis** (optional for MVP, required for queue processing)
+
+### Option A: Docker Compose (Recommended)
+
+```bash
+# Start PostgreSQL + API server
+docker-compose up -d db
+
+# Or start everything
+docker-compose up
+```
+
+Database will be available at `postgresql://postgres:postgres@localhost:5432/sentri_dev`
+
+### Option B: Manual Setup
 
 ### 1. Install Dependencies
 
@@ -120,6 +134,17 @@ cd client && npm run dev
 **Port already in use:**
 - Kill existing process: `lsof -ti:3000 | xargs kill -9`
 
+## Docker
+
+```bash
+# Development with hot reload
+docker-compose up db        # Just database
+docker-compose up           # Full stack
+
+# Production build
+cd server && docker build -t sentri-api .
+```
+
 ## Documentation
 
 - [Business Plan](docs/BUSINESS-PLAN.md) — Market, pricing, GTM strategy
@@ -130,12 +155,12 @@ cd client && npm run dev
 
 ## Brand
 
-| Element | Value |
-|---------|-------|
-| **Name** | Sentri |
-| **Tagline** | "Your reputation, on guard." |
-| **Primary Color** | `#1E3A5F` (Sentri Blue) |
-| **Font** | Inter |
+| Element           | Value                         |
+|-------------------|-------------------------------|
+| **Name**          | Sentri                        |
+| **Tagline**       | "Your reputation, on guard."  |
+| **Primary Color** | `#1E3A5F` (Sentri Blue)       |
+| **Font**          | Inter                         |
 
 See [Brand Guidelines](docs/BRAND-GUIDELINES.md) for complete brand documentation.
 

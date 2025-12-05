@@ -3,7 +3,7 @@ import { AppHeader } from './AppHeader'
 
 interface AppShellProps {
   children: React.ReactNode
-  dealerName: string
+  businessName: string
   pageTitle: string
   newReviewCount?: number
   onLogout: () => void
@@ -11,7 +11,7 @@ interface AppShellProps {
 
 export function AppShell({
   children,
-  dealerName,
+  businessName,
   pageTitle,
   newReviewCount = 0,
   onLogout,
@@ -29,7 +29,7 @@ export function AppShell({
         {/* Header */}
         <AppHeader
           pageTitle={pageTitle}
-          dealerName={dealerName}
+          businessName={businessName}
         />
 
         {/* Page content */}

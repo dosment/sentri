@@ -17,21 +17,31 @@ router.post('/generate', async (req: AuthRequest, res: Response, next: NextFunct
   try {
     const { reviewId } = generateSchema.parse(req.body);
 
-    const generatedText = await aiService.generateResponseForReview(
+    const result = await aiService.generateResponseForReview(
       reviewId,
-      req.dealer!.id
+      req.business!.id
     );
+
+    // If flagged for human review, return without creating a response
+    if (result.flaggedForHumanReview) {
+      res.status(200).json({
+        flaggedForHumanReview: true,
+        reason: result.flagReason,
+        message: 'This review requires manual attention and cannot be auto-responded.',
+      });
+      return;
+    }
 
     const response = await responsesService.createResponse(
       reviewId,
-      req.dealer!.id,
-      generatedText
+      req.business!.id,
+      result.text
     );
 
     logger.audit(AuditEvents.RESPONSE_GENERATED, {
       responseId: response.id,
       reviewId,
-      dealerId: req.dealer!.id,
+      businessId: req.business!.id,
     });
 
     res.json(response);
@@ -58,24 +68,34 @@ router.post('/regenerate/:responseId', async (req: AuthRequest, res: Response, n
   try {
     const existingResponse = await responsesService.getResponse(
       req.params.responseId,
-      req.dealer!.id
+      req.business!.id
     );
 
-    const generatedText = await aiService.generateResponseForReview(
+    const result = await aiService.generateResponseForReview(
       existingResponse.reviewId,
-      req.dealer!.id
+      req.business!.id
     );
+
+    // If flagged for human review, return without creating a response
+    if (result.flaggedForHumanReview) {
+      res.status(200).json({
+        flaggedForHumanReview: true,
+        reason: result.flagReason,
+        message: 'This review requires manual attention and cannot be auto-responded.',
+      });
+      return;
+    }
 
     const response = await responsesService.createResponse(
       existingResponse.reviewId,
-      req.dealer!.id,
-      generatedText
+      req.business!.id,
+      result.text
     );
 
     logger.audit(AuditEvents.RESPONSE_GENERATED, {
       responseId: response.id,
       reviewId: existingResponse.reviewId,
-      dealerId: req.dealer!.id,
+      businessId: req.business!.id,
       regenerated: true,
     });
 

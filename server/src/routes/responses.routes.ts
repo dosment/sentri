@@ -14,7 +14,7 @@ const updateSchema = z.object({
 
 router.get('/:id', async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
-    const response = await responsesService.getResponse(req.params.id, req.dealer!.id);
+    const response = await responsesService.getResponse(req.params.id, req.business!.id);
     res.json(response);
   } catch (error) {
     if (error instanceof Error && error.message === 'Response not found') {
@@ -30,14 +30,14 @@ router.patch('/:id', async (req: AuthRequest, res: Response, next: NextFunction)
     const data = updateSchema.parse(req.body);
     const response = await responsesService.updateResponse(
       req.params.id,
-      req.dealer!.id,
+      req.business!.id,
       data
     );
 
     logger.audit(AuditEvents.RESPONSE_EDITED, {
       responseId: req.params.id,
-      dealerId: req.dealer!.id,
-      dealerEmail: req.dealer!.email,
+      businessId: req.business!.id,
+      businessEmail: req.business!.email,
     });
 
     res.json(response);
@@ -58,15 +58,15 @@ router.post('/:id/approve', async (req: AuthRequest, res: Response, next: NextFu
   try {
     const response = await responsesService.approveResponse(
       req.params.id,
-      req.dealer!.id,
-      req.dealer!.email
+      req.business!.id,
+      req.business!.email
     );
 
     logger.audit(AuditEvents.RESPONSE_APPROVED, {
       responseId: req.params.id,
       reviewId: response.reviewId,
-      dealerId: req.dealer!.id,
-      dealerEmail: req.dealer!.email,
+      businessId: req.business!.id,
+      businessEmail: req.business!.email,
     });
 
     res.json(response);

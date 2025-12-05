@@ -3,7 +3,6 @@ import { useAuth } from '@/hooks/useAuth'
 import { useAdminAuth } from '@/hooks/useAdminAuth'
 import { LoginPage } from '@/pages/LoginPage'
 import { DashboardPage } from '@/pages/DashboardPage'
-import { ReportsPage } from '@/pages/ReportsPage'
 import { SettingsPage } from '@/pages/SettingsPage'
 import { AdminPage } from '@/pages/AdminPage'
 import { AdminLoginPage } from '@/pages/AdminLoginPage'
@@ -17,8 +16,8 @@ export default function App() {
     return <AdminApp />
   }
 
-  // Regular dealer app
-  return <DealerApp />
+  // Regular business app
+  return <BusinessApp />
 }
 
 function AdminApp() {
@@ -44,8 +43,8 @@ function AdminApp() {
   )
 }
 
-function DealerApp() {
-  const { dealer, loading, isAuthenticated, login, logout } = useAuth()
+function BusinessApp() {
+  const { business, loading, isAuthenticated, login, logout } = useAuth()
 
   if (loading) {
     return (
@@ -55,15 +54,14 @@ function DealerApp() {
     )
   }
 
-  if (!isAuthenticated || !dealer) {
+  if (!isAuthenticated || !business) {
     return <LoginPage onLogin={login} />
   }
 
   return (
     <Routes>
-      <Route path="/" element={<DashboardPage dealer={dealer} onLogout={logout} />} />
-      <Route path="/reports" element={<ReportsPage dealer={dealer} onLogout={logout} />} />
-      <Route path="/settings" element={<SettingsPage dealer={dealer} onLogout={logout} />} />
+      <Route path="/" element={<DashboardPage business={business} onLogout={logout} />} />
+      <Route path="/settings" element={<SettingsPage business={business} onLogout={logout} />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )

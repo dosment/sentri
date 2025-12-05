@@ -47,14 +47,14 @@ We access only the data necessary to provide the Service. We do not access your 
 
 We use your information to:
 
-| Purpose | Data Used | Legal Basis |
-|---------|-----------|-------------|
-| Provide the Service | Account info, Google reviews, OAuth tokens | Contract performance |
-| Generate AI responses | Review text, dealership context | Contract performance |
-| Post responses to Google | OAuth tokens, approved responses | Contract performance |
-| Improve the Service | Aggregated usage patterns | Legitimate business interest |
-| Communicate with you | Email address | Contract performance |
-| Prevent fraud and abuse | Log data, IP addresses | Legitimate business interest |
+| Purpose                  | Data Used                              | Legal Basis                   |
+|--------------------------|----------------------------------------|-------------------------------|
+| Provide the Service      | Account info, Google reviews, OAuth tokens | Contract performance      |
+| Generate AI responses    | Review text, dealership context        | Contract performance          |
+| Post responses to Google | OAuth tokens, approved responses       | Contract performance          |
+| Improve the Service      | Aggregated usage patterns              | Legitimate business interest  |
+| Communicate with you     | Email address                          | Contract performance          |
+| Prevent fraud and abuse  | Log data, IP addresses                 | Legitimate business interest  |
 
 We **do not** sell your personal information. We **do not** use your data for advertising.
 
@@ -79,11 +79,11 @@ We share information only as follows:
 
 ### 5.1 Service Providers
 
-| Provider | Purpose | Data Shared |
-|----------|---------|-------------|
-| Google (Gemini AI) | Response generation | Review text |
-| Google (Business Profile API) | Review sync and posting | OAuth tokens, responses |
-| Railway | Cloud hosting | All service data (encrypted) |
+| Provider                       | Purpose                 | Data Shared                   |
+|--------------------------------|-------------------------|-------------------------------|
+| Google (Gemini AI)             | Response generation     | Review text                   |
+| Google (Business Profile API)  | Review sync and posting | OAuth tokens, responses       |
+| Railway                        | Cloud hosting           | All service data (encrypted)  |
 
 All service providers are contractually bound to protect your data and use it only for providing services to us.
 
@@ -103,13 +103,13 @@ If Sentri is acquired or merged, your information may be transferred. We will no
 
 ## 6. Data Retention
 
-| Data Type | Retention Period |
-|-----------|------------------|
-| Account information | Duration of account + 30 days after deletion |
-| Google OAuth tokens | Until you disconnect Google or delete account |
-| Review data | Synced from Google; deleted when you disconnect or delete account |
-| AI-generated responses | Duration of account + 30 days |
-| Log data | 90 days |
+| Data Type               | Retention Period                                                    |
+|-------------------------|---------------------------------------------------------------------|
+| Account information     | Duration of account + 30 days after deletion                        |
+| Google OAuth tokens     | Until you disconnect Google or delete account                       |
+| Review data             | Synced from Google; deleted when you disconnect or delete account   |
+| AI-generated responses  | Duration of account + 30 days                                       |
+| Log data                | 90 days                                                             |
 
 You can request deletion of your account at any time by contacting us.
 

@@ -14,14 +14,14 @@ This document tells you exactly what actions YOU need to take to enable Google O
 
 ## Overview
 
-| Step | Time | Requires | Blocker? |
-|------|------|----------|----------|
-| 1. Create Google Cloud Project | 5 min | Google account | No |
-| 2. Enable APIs | 2 min | Step 1 | No |
-| 3. Configure OAuth Consent Screen | 15 min | Business info | **Yes — needs company details** |
-| 4. Create OAuth Credentials | 5 min | Step 3 | No |
-| 5. Submit for Verification | 10 min | Privacy Policy URL | **Yes — needs live privacy policy** |
-| 6. Wait for Google Review | 1-4 weeks | Step 5 | **Yes — external dependency** |
+| Step                               | Time      | Requires             | Blocker?                            |
+|------------------------------------|-----------|----------------------|-------------------------------------|
+| 1. Create Google Cloud Project     | 5 min     | Google account       | No                                  |
+| 2. Enable APIs                     | 2 min     | Step 1               | No                                  |
+| 3. Configure OAuth Consent Screen  | 15 min    | Business info        | **Yes — needs company details**     |
+| 4. Create OAuth Credentials        | 5 min     | Step 3               | No                                  |
+| 5. Submit for Verification         | 10 min    | Privacy Policy URL   | **Yes — needs live privacy policy** |
+| 6. Wait for Google Review          | 1-4 weeks | Step 5               | **Yes — external dependency**       |
 
 **Total hands-on time:** ~40 minutes
 **Total wait time:** 1-4 weeks (Google review)
@@ -48,11 +48,11 @@ This document tells you exactly what actions YOU need to take to enable Google O
 
 In Google Cloud Console, go to **APIs & Services > Library** and enable these:
 
-| API | Search Term | Purpose |
-|-----|-------------|---------|
-| Google My Business API | "my business" | Read reviews |
-| My Business Account Management API | "business account" | List locations |
-| My Business Business Information API | "business information" | Get business details |
+| API                                    | Search Term            | Purpose              |
+|----------------------------------------|------------------------|----------------------|
+| Google My Business API                 | "my business"          | Read reviews         |
+| My Business Account Management API     | "business account"     | List locations       |
+| My Business Business Information API   | "business information" | Get business details |
 
 For each:
 1. Search for the API
@@ -72,19 +72,19 @@ Select: **External** (allows any Google user to authorize)
 
 ### 3b. App Information
 
-| Field | Value |
-|-------|-------|
-| App name | `Sentri` |
-| User support email | `support@[your-domain].com` |
-| App logo | Upload Sentri logo (512x512 PNG) — can skip for now |
+| Field              | Value                                              |
+|--------------------|----------------------------------------------------|
+| App name           | `Sentri`                                           |
+| User support email | `support@[your-domain].com`                        |
+| App logo           | Upload Sentri logo (512x512 PNG) — can skip for now |
 
 ### 3c. App Domain
 
-| Field | Value |
-|-------|-------|
-| Application home page | `https://sentri.app` (or your production URL) |
-| Application privacy policy link | `https://sentri.app/privacy` |
-| Application terms of service link | `https://sentri.app/terms` |
+| Field                             | Value                                         |
+|-----------------------------------|-----------------------------------------------|
+| Application home page             | `https://sentri.app` (or your production URL) |
+| Application privacy policy link   | `https://sentri.app/privacy`                  |
+| Application terms of service link | `https://sentri.app/terms`                    |
 
 **BLOCKER:** You need live URLs. The privacy policy and terms must be publicly accessible before Google will approve. Deploy these first.
 
@@ -97,16 +97,16 @@ sentri.app
 
 ### 3e. Developer Contact Information
 
-| Field | Value |
-|-------|-------|
+| Field           | Value                |
+|-----------------|----------------------|
 | Email addresses | Your email (dan@...) |
 
 ### 3f. Scopes
 
 Click "Add or Remove Scopes" and add:
 
-| Scope | Purpose |
-|-------|---------|
+| Scope                                             | Purpose                                          |
+|---------------------------------------------------|--------------------------------------------------|
 | `https://www.googleapis.com/auth/business.manage` | Full access to manage business (includes reviews) |
 
 **Why this scope:** This is the broad scope that includes review reading and responding. Narrower scopes exist but are less documented.
@@ -169,12 +169,12 @@ To go to production, you need Google's verification.
 
 Google requires:
 
-| Requirement | What to Prepare |
-|-------------|-----------------|
-| Privacy Policy | Live URL (we drafted `docs/PRIVACY-POLICY.md` — deploy it) |
-| Terms of Service | Live URL (we drafted `docs/TERMS-OF-SERVICE.md` — deploy it) |
-| YouTube video | Record 1-2 min demo showing OAuth flow and how you use the data |
-| Written justification | Explain why you need the `business.manage` scope |
+| Requirement           | What to Prepare                                                  |
+|-----------------------|------------------------------------------------------------------|
+| Privacy Policy        | Live URL (we drafted `docs/PRIVACY-POLICY.md` — deploy it)       |
+| Terms of Service      | Live URL (we drafted `docs/TERMS-OF-SERVICE.md` — deploy it)     |
+| YouTube video         | Record 1-2 min demo showing OAuth flow and how you use the data  |
+| Written justification | Explain why you need the `business.manage` scope                 |
 
 ### 5b. Write the Justification
 
@@ -223,11 +223,11 @@ Upload to YouTube (unlisted is fine) and provide the link.
 
 ## Step 6: Wait for Google Review
 
-| Review Type | Timeline | Probability |
-|-------------|----------|-------------|
-| Standard review | 1-2 weeks | 80% |
-| Extended review (if questions) | 2-4 weeks | 15% |
-| Rejection (resubmit needed) | 3-6 weeks total | 5% |
+| Review Type                      | Timeline        | Probability |
+|----------------------------------|-----------------|-------------|
+| Standard review                  | 1-2 weeks       | 80%         |
+| Extended review (if questions)   | 2-4 weeks       | 15%         |
+| Rejection (resubmit needed)      | 3-6 weeks total | 5%          |
 
 **Common rejection reasons:**
 - Privacy policy doesn't mention the specific scopes/data accessed
@@ -259,11 +259,11 @@ We can then implement:
 
 While you do this, engineering is building:
 
-| Already Done | In Progress | Waiting on OAuth |
-|--------------|-------------|------------------|
-| Token encryption | CI/CD pipeline | Review sync service |
-| Platform service | Test infrastructure | Response posting |
-| Database schema | Onboarding UI | Google callback handler |
+| Already Done       | In Progress          | Waiting on OAuth        |
+|--------------------|----------------------|-------------------------|
+| Token encryption   | CI/CD pipeline       | Review sync service     |
+| Platform service   | Test infrastructure  | Response posting        |
+| Database schema    | Onboarding UI        | Google callback handler |
 
 We're not blocked. When you hand over the credentials, we wire it up.
 
@@ -271,16 +271,16 @@ We're not blocked. When you hand over the credentials, we wire it up.
 
 ## Action Items for Dan
 
-| Action | Deadline | Notes |
-|--------|----------|-------|
-| Create Google Cloud project | Today | 5 minutes |
-| Enable APIs | Today | 2 minutes |
-| Deploy Privacy Policy to production URL | This week | Needed for OAuth consent screen |
-| Deploy Terms of Service to production URL | This week | Needed for OAuth consent screen |
-| Configure OAuth consent screen | This week | Once legal docs are live |
-| Create OAuth credentials | This week | Get credentials to engineering |
-| Record demo video | Before verification | ~5 min recording |
-| Submit for verification | This week | Then we wait |
+| Action                                      | Deadline            | Notes                              |
+|---------------------------------------------|---------------------|------------------------------------|
+| Create Google Cloud project                 | Today               | 5 minutes                          |
+| Enable APIs                                 | Today               | 2 minutes                          |
+| Deploy Privacy Policy to production URL     | This week           | Needed for OAuth consent screen    |
+| Deploy Terms of Service to production URL   | This week           | Needed for OAuth consent screen    |
+| Configure OAuth consent screen              | This week           | Once legal docs are live           |
+| Create OAuth credentials                    | This week           | Get credentials to engineering     |
+| Record demo video                           | Before verification | ~5 min recording                   |
+| Submit for verification                     | This week           | Then we wait                       |
 
 ---
 

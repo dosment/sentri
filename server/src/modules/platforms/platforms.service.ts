@@ -9,7 +9,7 @@ interface TokenData {
 }
 
 interface CreateConnectionInput {
-  dealerId: string;
+  businessId: string;
   platform: Platform;
   platformAccountId: string;
   tokens: TokenData;
@@ -29,7 +29,7 @@ export async function createPlatformConnection(input: CreateConnectionInput) {
 
   return prisma.platformConnection.create({
     data: {
-      dealerId: input.dealerId,
+      businessId: input.businessId,
       platform: input.platform,
       platformAccountId: input.platformAccountId,
       accessToken: encryptedAccessToken,
@@ -40,10 +40,10 @@ export async function createPlatformConnection(input: CreateConnectionInput) {
   });
 }
 
-export async function getPlatformConnection(dealerId: string, platform: Platform) {
+export async function getPlatformConnection(businessId: string, platform: Platform) {
   const connection = await prisma.platformConnection.findUnique({
     where: {
-      dealerId_platform: { dealerId, platform },
+      businessId_platform: { businessId, platform },
     },
   });
 
@@ -60,9 +60,9 @@ export async function getPlatformConnection(dealerId: string, platform: Platform
   };
 }
 
-export async function getActivePlatformConnections(dealerId: string) {
+export async function getActivePlatformConnections(businessId: string) {
   const connections = await prisma.platformConnection.findMany({
-    where: { dealerId, isActive: true },
+    where: { businessId, isActive: true },
   });
 
   return connections.map((conn) => ({
@@ -75,7 +75,7 @@ export async function getActivePlatformConnections(dealerId: string) {
 }
 
 export async function updatePlatformTokens(
-  dealerId: string,
+  businessId: string,
   platform: Platform,
   tokens: UpdateTokensInput
 ) {
@@ -86,7 +86,7 @@ export async function updatePlatformTokens(
 
   return prisma.platformConnection.update({
     where: {
-      dealerId_platform: { dealerId, platform },
+      businessId_platform: { businessId, platform },
     },
     data: {
       accessToken: encryptedAccessToken,
@@ -96,10 +96,10 @@ export async function updatePlatformTokens(
   });
 }
 
-export async function disconnectPlatform(dealerId: string, platform: Platform) {
+export async function disconnectPlatform(businessId: string, platform: Platform) {
   return prisma.platformConnection.update({
     where: {
-      dealerId_platform: { dealerId, platform },
+      businessId_platform: { businessId, platform },
     },
     data: {
       isActive: false,
@@ -109,18 +109,18 @@ export async function disconnectPlatform(dealerId: string, platform: Platform) {
   });
 }
 
-export async function deletePlatformConnection(dealerId: string, platform: Platform) {
+export async function deletePlatformConnection(businessId: string, platform: Platform) {
   return prisma.platformConnection.delete({
     where: {
-      dealerId_platform: { dealerId, platform },
+      businessId_platform: { businessId, platform },
     },
   });
 }
 
-export async function updateLastSync(dealerId: string, platform: Platform) {
+export async function updateLastSync(businessId: string, platform: Platform) {
   return prisma.platformConnection.update({
     where: {
-      dealerId_platform: { dealerId, platform },
+      businessId_platform: { businessId, platform },
     },
     data: {
       lastSyncAt: new Date(),

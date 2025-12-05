@@ -6,15 +6,15 @@ Sentri integrates with multiple review platforms to provide unified reputation m
 
 ## Platform Priority
 
-| Phase | Platform | API Type | Read Reviews | Post Response | Status |
-|-------|----------|----------|--------------|---------------|--------|
-| MVP | Google Business Profile | Official OAuth | Yes | Yes | Planned |
-| MVP | Facebook | Graph API | Yes | Yes | Planned |
-| Phase 2 | DealerRater | Official REST | Yes | Yes | Planned |
-| Phase 2 | Cars.com | Via DealerRater | Yes | Yes | Planned |
-| Phase 2 | Yelp | Partner REST | Yes | Yes | Planned |
-| Phase 3 | CarGurus | Dealer API | Yes | Limited | Planned |
-| Phase 3 | Edmunds | Manual/Partnership | TBD | TBD | Research |
+| Phase   | Platform                | API Type           | Read Reviews | Post Response | Status  |
+|---------|-------------------------|--------------------|--------------|---------------|---------|
+| MVP     | Google Business Profile | Official OAuth     | Yes          | Yes           | Planned |
+| MVP     | Facebook                | Graph API          | Yes          | Yes           | Planned |
+| Phase 2 | DealerRater             | Official REST      | Yes          | Yes           | Planned |
+| Phase 2 | Cars.com                | Via DealerRater    | Yes          | Yes           | Planned |
+| Phase 2 | Yelp                    | Partner REST       | Yes          | Yes           | Planned |
+| Phase 3 | CarGurus                | Dealer API         | Yes          | Limited       | Planned |
+| Phase 3 | Edmunds                 | Manual/Partnership | TBD          | TBD           | Research |
 
 ## Google Business Profile
 

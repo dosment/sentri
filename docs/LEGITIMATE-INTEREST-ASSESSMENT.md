@@ -65,12 +65,12 @@ Yes. Responding to public business reviews is a recognized, lawful business acti
 
 **Is the processing necessary to achieve the purpose?**
 
-| Question | Answer |
-|----------|--------|
-| Can the purpose be achieved without processing this data? | No. To generate a response to a review, we must process the review content. |
-| Are we processing more data than needed? | No. We process only the review data visible on Google — name, text, rating. |
-| Could we achieve the same result with less data? | No. The review text is essential for generating a relevant response. |
-| Is there a less intrusive alternative? | No. The dealership could respond manually, but that's not less intrusive — they'd still read the same data. |
+| Question                                                    | Answer                                                                                                           |
+|-------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
+| Can the purpose be achieved without processing this data?   | No. To generate a response to a review, we must process the review content.                                     |
+| Are we processing more data than needed?                    | No. We process only the review data visible on Google — name, text, rating.                                     |
+| Could we achieve the same result with less data?            | No. The review text is essential for generating a relevant response.                                             |
+| Is there a less intrusive alternative?                      | No. The dealership could respond manually, but that's not less intrusive — they'd still read the same data.     |
 
 **Assessment: PASS** — Processing is necessary and proportionate.
 
@@ -85,22 +85,22 @@ Yes. Responding to public business reviews is a recognized, lawful business acti
 
 **Factors that REDUCE impact on reviewer:**
 
-| Factor | Analysis |
-|--------|----------|
-| Data is already public | The reviewer chose to post publicly on Google. There is no reasonable expectation of privacy in public reviews. |
+| Factor                                         | Analysis                                                                                                                   |
+|------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| Data is already public                         | The reviewer chose to post publicly on Google. There is no reasonable expectation of privacy in public reviews.           |
 | Processing is closely related to original context | The reviewer posted a review expecting a response from the business. Generating a response is the natural, expected use of review data. |
-| No sensitive data | Reviews typically contain opinions, not special category data (health, politics, etc.). |
-| No decision-making about the reviewer | We are not making decisions that affect the reviewer. We're helping the business respond. |
-| Reviewer retains control | The reviewer can delete or edit their review on Google at any time. |
-| No profiling | We do not build profiles of reviewers or track them across platforms. |
-| Data minimization | We process only what's publicly visible; we don't enrich with additional data. |
+| No sensitive data                              | Reviews typically contain opinions, not special category data (health, politics, etc.).                                   |
+| No decision-making about the reviewer          | We are not making decisions that affect the reviewer. We're helping the business respond.                                 |
+| Reviewer retains control                       | The reviewer can delete or edit their review on Google at any time.                                                       |
+| No profiling                                   | We do not build profiles of reviewers or track them across platforms.                                                     |
+| Data minimization                              | We process only what's publicly visible; we don't enrich with additional data.                                            |
 
 **Factors that INCREASE impact on reviewer:**
 
-| Factor | Analysis | Mitigation |
-|--------|----------|------------|
-| Reviewer didn't consent to AI processing | True, but consent is not required when relying on legitimate interest. The processing is proportionate and expected. | Disclosed in Privacy Policy. |
-| Data sent to third-party AI | Review text is sent to Google Gemini. | Google is already the platform where reviews are posted. Data stays within Google ecosystem. |
+| Factor                                    | Analysis                                                                                                         | Mitigation                                                                                    |
+|-------------------------------------------|------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
+| Reviewer didn't consent to AI processing  | True, but consent is not required when relying on legitimate interest. The processing is proportionate and expected. | Disclosed in Privacy Policy.                                                              |
+| Data sent to third-party AI               | Review text is sent to Google Gemini.                                                                            | Google is already the platform where reviews are posted. Data stays within Google ecosystem. |
 
 **Balancing conclusion:**
 
@@ -120,14 +120,14 @@ The dealership's legitimate interest in responding to public reviews outweighs t
 
 To further protect reviewer interests, Sentri implements:
 
-| Safeguard | Description |
-|-----------|-------------|
-| Transparency | Privacy Policy discloses AI processing of review data |
-| Data minimization | Only necessary review fields are processed |
-| Security | Data encrypted in transit and at rest |
-| Limited retention | Review data synced from Google, not stored independently long-term |
-| Human oversight | All AI responses require dealer approval before posting |
-| No secondary use | Review data is not used for marketing, analytics, or any purpose beyond response generation |
+| Safeguard          | Description                                                                                           |
+|--------------------|-------------------------------------------------------------------------------------------------------|
+| Transparency       | Privacy Policy discloses AI processing of review data                                                 |
+| Data minimization  | Only necessary review fields are processed                                                            |
+| Security           | Data encrypted in transit and at rest                                                                 |
+| Limited retention  | Review data synced from Google, not stored independently long-term                                    |
+| Human oversight    | All AI responses require dealer approval before posting                                               |
+| No secondary use   | Review data is not used for marketing, analytics, or any purpose beyond response generation           |
 
 ---
 
@@ -151,10 +151,10 @@ This assessment should be reviewed:
 
 ## 6. Approval
 
-| Role | Name | Date | Signature |
-|------|------|------|-----------|
-| Data Protection Lead | | | |
-| Legal Counsel | | | |
+| Role                  | Name  | Date  | Signature  |
+|-----------------------|-------|-------|------------|
+| Data Protection Lead  |       |       |            |
+| Legal Counsel         |       |       |            |
 
 ---
 

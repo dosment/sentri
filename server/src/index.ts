@@ -1,8 +1,10 @@
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
 import { env } from './config/env.js';
 import { connectDatabase, disconnectDatabase, prisma } from './config/database.js';
 import { generalLimiter, authLimiter, aiLimiter } from './middleware/rate-limit.middleware.js';
+import { isAppError } from './lib/errors.js';
 import authRoutes from './routes/auth.routes.js';
 import reviewsRoutes from './routes/reviews.routes.js';
 import responsesRoutes from './routes/responses.routes.js';
@@ -12,7 +14,22 @@ import settingsRoutes from './routes/settings.routes.js';
 
 const app = express();
 
-// Security middleware
+// Security headers (Helmet)
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'"],
+      imgSrc: ["'self'", "data:", "https:"],
+    },
+  },
+  hsts: {
+    maxAge: 31536000, // 1 year
+    includeSubDomains: true,
+  },
+}));
+
 // CORS: Only allow requests from our frontend origin
 // This is the primary CSRF defense when using Authorization header (not cookies)
 app.use(cors({
@@ -45,8 +62,17 @@ app.use('/api/settings', generalLimiter, settingsRoutes);
 
 // Error handler
 app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Internal server error' });
+  if (isAppError(err)) {
+    // Operational error: safe to expose message
+    res.status(err.statusCode).json({
+      error: err.message,
+      ...(err.name === 'ValidationError' && 'details' in err ? { details: (err as any).details } : {})
+    });
+  } else {
+    // Programming error: log and return generic message
+    console.error('Unexpected error:', err.stack);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 // Startup

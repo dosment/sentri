@@ -11,6 +11,7 @@ export interface RegisterInput {
   password: string;
   name: string;
   phone?: string;
+  businessType?: string;
 }
 
 export interface LoginInput {
@@ -19,17 +20,18 @@ export interface LoginInput {
 }
 
 export interface AuthResult {
-  dealer: {
+  business: {
     id: string;
     email: string;
     name: string;
     plan: string;
+    businessType: string;
   };
   token: string;
 }
 
 export async function register(input: RegisterInput): Promise<AuthResult> {
-  const existing = await prisma.dealer.findUnique({
+  const existing = await prisma.business.findUnique({
     where: { email: input.email },
   });
 
@@ -39,92 +41,97 @@ export async function register(input: RegisterInput): Promise<AuthResult> {
 
   const passwordHash = await bcrypt.hash(input.password, SALT_ROUNDS);
 
-  const dealer = await prisma.dealer.create({
+  const business = await prisma.business.create({
     data: {
       email: input.email,
       passwordHash,
       name: input.name,
       phone: input.phone,
+      businessType: (input.businessType as any) || 'OTHER',
     },
     select: {
       id: true,
       email: true,
       name: true,
       plan: true,
+      businessType: true,
     },
   });
 
-  const token = generateToken(dealer.id, dealer.email);
+  const token = generateToken(business.id, business.email);
 
-  return { dealer, token };
+  return { business, token };
 }
 
 export async function login(input: LoginInput) {
-  const dealer = await prisma.dealer.findUnique({
+  const business = await prisma.business.findUnique({
     where: { email: input.email },
     select: {
       id: true,
       email: true,
       name: true,
       plan: true,
+      businessType: true,
       isAdmin: true,
       passwordHash: true,
     },
   });
 
-  if (!dealer || !dealer.passwordHash) {
+  if (!business || !business.passwordHash) {
     throw new Error('Invalid credentials');
   }
 
-  const valid = await bcrypt.compare(input.password, dealer.passwordHash);
+  const valid = await bcrypt.compare(input.password, business.passwordHash);
 
   if (!valid) {
     throw new Error('Invalid credentials');
   }
 
-  const token = generateToken(dealer.id, dealer.email);
+  const token = generateToken(business.id, business.email);
 
-  const { passwordHash: _, isAdmin, ...dealerData } = dealer;
+  const { passwordHash: _, isAdmin, ...businessData } = business;
 
   // Only include isAdmin in response if user is actually an admin
-  // This prevents leaking role information to regular dealers
+  // This prevents leaking role information to regular businesses
   if (isAdmin) {
-    return { dealer: { ...dealerData, isAdmin: true as const }, token };
+    return { business: { ...businessData, isAdmin: true as const }, token };
   }
 
-  return { dealer: dealerData, token };
+  return { business: businessData, token };
 }
 
-export async function getDealer(dealerId: string) {
-  const dealer = await prisma.dealer.findUnique({
-    where: { id: dealerId },
+export async function getBusiness(businessId: string) {
+  const business = await prisma.business.findUnique({
+    where: { id: businessId },
     select: {
       id: true,
       email: true,
       name: true,
       phone: true,
       plan: true,
+      businessType: true,
       isAdmin: true,
+      googleReviewUrl: true,
       createdAt: true,
     },
   });
 
-  if (!dealer) {
-    throw new Error('Dealer not found');
+  if (!business) {
+    throw new Error('Business not found');
   }
 
   // Only include isAdmin in response if user is actually an admin
-  // This prevents leaking role information to regular dealers
-  const { isAdmin, ...dealerData } = dealer;
+  // This prevents leaking role information to regular businesses
+  const { isAdmin, ...businessData } = business;
   if (isAdmin) {
-    return { ...dealerData, isAdmin: true as const };
+    return { ...businessData, isAdmin: true as const };
   }
 
-  return dealerData;
+  return businessData;
 }
 
-function generateToken(dealerId: string, email: string): string {
-  return jwt.sign({ dealerId, email }, env.JWT_SECRET, {
+function generateToken(businessId: string, email: string): string {
+  return jwt.sign({ businessId, email }, env.JWT_SECRET, {
     expiresIn: TOKEN_EXPIRY,
   });
 }
@@ -140,17 +147,17 @@ export interface OnboardingStatus {
   isComplete: boolean;
 }
 
-export async function getOnboardingStatus(dealerId: string): Promise<OnboardingStatus> {
+export async function getOnboardingStatus(businessId: string): Promise<OnboardingStatus> {
   const [platformConnection, reviewCount, approvedResponseCount] = await Promise.all([
     prisma.platformConnection.findFirst({
-      where: { dealerId, platform: 'GOOGLE', isActive: true },
+      where: { businessId, platform: 'GOOGLE', isActive: true },
       select: { id: true },
     }),
     prisma.review.count({
-      where: { dealerId },
+      where: { businessId },
     }),
     prisma.response.count({
-      where: { dealerId, status: 'APPROVED' },
+      where: { businessId, status: 'APPROVED' },
     }),
   ]);
 

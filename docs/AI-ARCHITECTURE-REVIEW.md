@@ -176,15 +176,15 @@
 
 **Documentation says:** Claude API (Anthropic)
 
-| File | Current Text | Should Be |
-|------|--------------|-----------|
-| `README.md:18` | "via Claude" | "via Google Gemini" |
-| `README.md:29` | "Claude API (Anthropic)" | "Gemini API (Google)" |
-| `claude.md:43` | "Claude API" | "Gemini API" |
-| `ARCHITECTURE.md:68` | "Claude AI" | "Gemini AI" |
-| `ARCHITECTURE.md:82` | "Claude API (Anthropic)" | "Gemini API (Google)" |
-| `ARCHITECTURE.md:336` | "ANTHROPIC_API_KEY" | "GEMINI_API_KEY" |
-| `BUSINESS-PLAN.md:129` | "AI API (Claude)" | "AI API (Gemini)" |
+| File                     | Current Text              | Should Be              |
+|--------------------------|---------------------------|------------------------|
+| `README.md:18`           | "via Claude"              | "via Google Gemini"    |
+| `README.md:29`           | "Claude API (Anthropic)"  | "Gemini API (Google)"  |
+| `claude.md:43`           | "Claude API"              | "Gemini API"           |
+| `ARCHITECTURE.md:68`     | "Claude AI"               | "Gemini AI"            |
+| `ARCHITECTURE.md:82`     | "Claude API (Anthropic)"  | "Gemini API (Google)"  |
+| `ARCHITECTURE.md:336`    | "ANTHROPIC_API_KEY"       | "GEMINI_API_KEY"       |
+| `BUSINESS-PLAN.md:129`   | "AI API (Claude)"         | "AI API (Gemini)"      |
 
 ### Resolution
 
@@ -274,23 +274,23 @@ All documentation has been updated to reflect actual implementation: **Google Ge
 
 ### Current: `gemini-1.5-flash`
 
-| Aspect | Assessment |
-|--------|------------|
-| **Speed** | Fast (~1-2s generation) |
-| **Cost** | Low ($0.075/1M input tokens) |
-| **Quality** | Good for structured responses |
+| Aspect      | Assessment                         |
+|-------------|------------------------------------|
+| **Speed**   | Fast (~1-2s generation)            |
+| **Cost**    | Low ($0.075/1M input tokens)       |
+| **Quality** | Good for structured responses      |
 | **Context** | 1M tokens (overkill for this use case) |
 
 **Verdict:** Appropriate choice for MVP. Fast, cheap, good enough.
 
 ### Alternative Models
 
-| Model | Use Case | When to Consider |
-|-------|----------|------------------|
-| `gemini-1.5-pro` | Higher quality responses | If flash quality is insufficient |
-| `gemini-2.0-flash-exp` | Latest capabilities | When stable and production-ready |
-| Claude 3 Sonnet | Alternative provider | For provider redundancy |
-| GPT-4o-mini | Alternative provider | For provider redundancy |
+| Model                   | Use Case                  | When to Consider                  |
+|-------------------------|---------------------------|-----------------------------------|
+| `gemini-1.5-pro`        | Higher quality responses  | If flash quality is insufficient  |
+| `gemini-2.0-flash-exp`  | Latest capabilities       | When stable and production-ready  |
+| Claude 3 Sonnet         | Alternative provider      | For provider redundancy           |
+| GPT-4o-mini             | Alternative provider      | For provider redundancy           |
 
 **Recommendation:** Stay with `gemini-1.5-flash` for now. Add provider abstraction in Phase 2 for redundancy.
 
@@ -337,28 +337,28 @@ All documentation has been updated to reflect actual implementation: **Google Ge
 
 ### Immediate (Before Demo)
 
-| Priority | Item | Effort |
-|----------|------|--------|
-| P0 | Update all documentation to reference Gemini | 30 min |
-| P0 | Add retry logic with exponential backoff | 1 hour |
-| P1 | Add timeout configuration | 30 min |
-| P1 | Add response length validation | 30 min |
+| Priority  | Item                                          | Effort   |
+|-----------|-----------------------------------------------|----------|
+| P0        | Update all documentation to reference Gemini  | 30 min   |
+| P0        | Add retry logic with exponential backoff      | 1 hour   |
+| P1        | Add timeout configuration                     | 30 min   |
+| P1        | Add response length validation                | 30 min   |
 
 ### Before Pilot
 
-| Priority | Item | Effort |
-|----------|------|--------|
-| P1 | Add response content filter | 2 hours |
-| P1 | Add regeneration rate limit | 1 hour |
-| P2 | Add response caching (optional) | 2 hours |
+| Priority  | Item                              | Effort   |
+|-----------|-----------------------------------|----------|
+| P1        | Add response content filter       | 2 hours  |
+| P1        | Add regeneration rate limit       | 1 hour   |
+| P2        | Add response caching (optional)   | 2 hours  |
 
 ### Phase 2
 
-| Priority | Item | Effort |
-|----------|------|--------|
-| P2 | Abstract AI provider interface | 4 hours |
-| P2 | Add fallback provider support | 4 hours |
-| P3 | Add streaming support | 4 hours |
+| Priority  | Item                            | Effort   |
+|-----------|---------------------------------|----------|
+| P2        | Abstract AI provider interface  | 4 hours  |
+| P2        | Add fallback provider support   | 4 hours  |
+| P3        | Add streaming support           | 4 hours  |
 
 ---
 

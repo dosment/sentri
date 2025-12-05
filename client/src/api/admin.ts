@@ -1,10 +1,12 @@
 import { api } from './client'
+import type { BusinessType } from './auth'
 
-export interface AdminDealer {
+export interface AdminBusiness {
   id: string
   email: string
   name: string
   phone?: string
+  businessType: BusinessType
   plan: 'STARTER' | 'PROFESSIONAL' | 'ENTERPRISE'
   isAdmin: boolean
   createdAt: string
@@ -14,43 +16,45 @@ export interface AdminDealer {
   }
 }
 
-export interface DealerDetails extends AdminDealer {
+export interface BusinessDetails extends AdminBusiness {
   customInstructions?: string
   voiceProfile?: unknown
-  autoApproveThreshold: number
+  autoPostThreshold: number
   updatedAt: string
   reviewStats: Record<string, number>
   responseStats: Record<string, number>
 }
 
-export interface CreateDealerInput {
+export interface CreateBusinessInput {
   email: string
   password: string
   name: string
   phone?: string
+  businessType?: BusinessType
   plan?: 'STARTER' | 'PROFESSIONAL' | 'ENTERPRISE'
   customInstructions?: string
 }
 
-export interface UpdateDealerInput {
+export interface UpdateBusinessInput {
   name?: string
   phone?: string
+  businessType?: BusinessType
   plan?: 'STARTER' | 'PROFESSIONAL' | 'ENTERPRISE'
   customInstructions?: string
 }
 
-export async function getDealers(): Promise<AdminDealer[]> {
-  return api.get<AdminDealer[]>('/admin/dealers')
+export async function getBusinesses(): Promise<AdminBusiness[]> {
+  return api.get<AdminBusiness[]>('/admin/businesses')
 }
 
-export async function getDealer(id: string): Promise<DealerDetails> {
-  return api.get<DealerDetails>(`/admin/dealers/${id}`)
+export async function getBusiness(id: string): Promise<BusinessDetails> {
+  return api.get<BusinessDetails>(`/admin/businesses/${id}`)
 }
 
-export async function createDealer(input: CreateDealerInput): Promise<AdminDealer> {
-  return api.post<AdminDealer>('/admin/dealers', input)
+export async function createBusiness(input: CreateBusinessInput): Promise<AdminBusiness> {
+  return api.post<AdminBusiness>('/admin/businesses', input)
 }
 
-export async function updateDealer(id: string, input: UpdateDealerInput): Promise<AdminDealer> {
-  return api.patch<AdminDealer>(`/admin/dealers/${id}`, input)
+export async function updateBusiness(id: string, input: UpdateBusinessInput): Promise<AdminBusiness> {
+  return api.patch<AdminBusiness>(`/admin/businesses/${id}`, input)
 }

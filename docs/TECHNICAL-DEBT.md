@@ -1,6 +1,6 @@
 # Sentri — Technical Debt Register
 
-**Last Updated:** December 4, 2025
+**Last Updated:** December 4, 2025 (Updated)
 **Owner:** Frank Slootman (COO)
 
 ---
@@ -384,7 +384,8 @@ Server crashes on startup without `.env` file. New developers must manually crea
 - [x] Add `server/.env` to `.gitignore` (credentials should not be committed) — already present
 - [ ] Update env.ts to provide sensible defaults for development mode
 - [ ] Generate random JWT_SECRET in development if not provided
-- [ ] Add Docker Compose for local PostgreSQL (removes external dependency)
+- [x] Add Docker Compose for local PostgreSQL — `docker-compose.yml`
+- [x] Add Dockerfile for server — `server/Dockerfile`
 - [ ] Document in Getting Started tutorial (blocked on TD-027)
 
 ---
@@ -523,6 +524,59 @@ Server crashes on startup without `.env` file. New developers must manually crea
 
 ---
 
+### TD-035: No Security Headers
+**Priority:** HIGH | **Resolved:** December 2025
+
+- [x] Add Helmet middleware for security headers — `server/src/index.ts`
+- [x] Configure Content-Security-Policy
+- [x] Enable HSTS with 1-year max-age
+- [x] Add X-Content-Type-Options, X-Frame-Options, etc.
+
+---
+
+### TD-036: No API Pagination
+**Priority:** HIGH | **Resolved:** December 2025
+
+- [x] Add pagination to reviews endpoint — `server/src/modules/reviews/reviews.service.ts`
+- [x] Default page size of 50, max 100
+- [x] Return pagination metadata (total, totalPages, hasMore)
+- [x] Update route to accept page/limit params
+
+---
+
+### TD-037: String-Based Error Handling
+**Priority:** HIGH | **Resolved:** December 2025
+
+- [x] Create custom error classes — `server/src/lib/errors.ts`
+- [x] NotFoundError, ValidationError, UnauthorizedError, etc.
+- [x] Update global error handler to use AppError type guard
+- [x] Migrate reviews service to use NotFoundError
+
+---
+
+### TD-038: No Admin Audit Log
+**Priority:** HIGH | **Resolved:** December 2025
+
+- [x] Add AuditLog model to Prisma schema
+- [x] Add AuditAction enum (CREATE, UPDATE, DELETE, LOGIN, etc.)
+- [x] Create audit service — `server/src/lib/audit.ts`
+- [x] Index on entity, actor, timestamp, action
+
+---
+
+### TD-039: Historical Review Auto-Post Risk
+**Priority:** CRITICAL | **Resolved:** December 2025
+
+- [x] Add `isHistorical` field to Review model — `server/prisma/schema.prisma`
+- [x] Add review age check (7-day max) — `server/src/modules/responses/responses.service.ts`
+- [x] Block auto-approve for historical reviews
+- [x] Block auto-approve for reviews older than 7 days
+- [x] Manual approval still works for all reviews
+
+**Safeguard prevents:** Mass auto-posting to years-old reviews when business onboards.
+
+---
+
 ### TD-003: OAuth Tokens Stored in Plaintext
 **Priority:** CRITICAL | **Resolved:** December 2025
 
@@ -546,39 +600,39 @@ Server crashes on startup without `.env` file. New developers must manually crea
 
 ## Debt Summary
 
-| Priority | Active | Blocked | Resolved |
-|----------|--------|---------|----------|
-| CRITICAL | 0 | 1 | 1 |
-| HIGH | 5 | 0 | 9 |
-| MEDIUM | 8 | 0 | 4 |
-| LOW | 3 | 0 | 2 |
-| **Total** | **16** | **1** | **16** |
+| Priority  | Active   | Blocked | Resolved |
+|-----------|----------|---------|----------|
+| CRITICAL  | 0        | 1       | 2        |
+| HIGH      | 2        | 0       | 13       |
+| MEDIUM    | 8        | 0       | 4        |
+| LOW       | 3        | 0       | 2        |
+| **Total** | **13**   | **1**   | **21**   |
 
 ### Active Debt by Category
 
-| Category | Items | Owners |
-|----------|-------|--------|
-| Security | TD-009 | Bruce Schneier |
-| Infrastructure | TD-010, TD-012, TD-013 | Kelsey Hightower, James Bach |
-| UX/UI | TD-020, TD-024, TD-026 | Marty N, Steve |
-| Product | TD-019 | Jeff Bezos |
-| Documentation | TD-027, TD-028, TD-029, TD-030, TD-031, TD-032, TD-033 | Daniele Procida |
-| Cleanup | TD-014 | — |
+| Category       | Items                                                 | Owners                       |
+|----------------|-------------------------------------------------------|------------------------------|
+| Security       | TD-009                                                | Bruce Schneier               |
+| Infrastructure | TD-010, TD-012, TD-013                                | Kelsey Hightower, James Bach |
+| UX/UI          | TD-020, TD-024, TD-026                                | Marty N, Steve               |
+| Product        | TD-019                                                | Jeff Bezos                   |
+| Documentation  | TD-027, TD-028, TD-029, TD-030, TD-031, TD-032, TD-033 | Daniele Procida              |
+| Cleanup        | TD-014                                                | —                            |
 
 ### Blocked Debt
 
-| Category | Items | Owners | Blocker |
-|----------|-------|--------|---------|
+| Category         | Items  | Owners      | Blocker           |
+|------------------|--------|-------------|-------------------|
 | Legal/Compliance | TD-015 | Max Schrems | Company formation |
 
 ### Blocking Items
 
-| ID | Description | Blocks |
-|----|-------------|--------|
-| TD-012 | No automated tests | CI test runs, confident refactoring |
-| TD-027 | No Getting Started tutorial | **New developer onboarding** |
+| ID     | Description                 | Blocks                              |
+|--------|-----------------------------|------------------------------------|
+| TD-012 | No automated tests          | CI test runs, confident refactoring |
+| TD-027 | No Getting Started tutorial | **New developer onboarding**        |
 
-*Note: TD-015 (Legal docs) blocked on company formation, TD-003 (Token encryption) resolved.*
+*Note: TD-015 (Legal docs) blocked on company formation.*
 
 ---
 
@@ -592,16 +646,19 @@ Server crashes on startup without `.env` file. New developers must manually crea
 
 ## Changelog
 
-| Date | Change |
-|------|--------|
-| Dec 2025 | Initial register with 14 items from MVP review |
-| Dec 2025 | Resolved 8 items (TD-001, 002, 004, 005, 006, 007, 008, 011) |
-| Dec 2025 | Added 7 items from Team Review v2 (TD-015 through TD-021) |
-| Dec 2025 | Resolved 3 items (TD-016, 017, 021) — UX quick wins |
-| Dec 2025 | Added 5 items from UI/UX Deep Dive (TD-022 through TD-026) |
-| Dec 2025 | Resolved 3 items (TD-022, 023, 025) — Demo readiness fixes |
-| Dec 2025 | Added 6 items from Documentation Review (TD-027 through TD-032) — Diátaxis analysis |
+| Date     | Change                                                                              |
+|----------|--------------------------------------------------------------------------------------|
+| Dec 2025 | Initial register with 14 items from MVP review                                       |
+| Dec 2025 | Resolved 8 items (TD-001, 002, 004, 005, 006, 007, 008, 011)                         |
+| Dec 2025 | Added 7 items from Team Review v2 (TD-015 through TD-021)                            |
+| Dec 2025 | Resolved 3 items (TD-016, 017, 021) — UX quick wins                                  |
+| Dec 2025 | Added 5 items from UI/UX Deep Dive (TD-022 through TD-026)                           |
+| Dec 2025 | Resolved 3 items (TD-022, 023, 025) — Demo readiness fixes                           |
+| Dec 2025 | Added 6 items from Documentation Review (TD-027 through TD-032) — Diátaxis analysis  |
 | Dec 2025 | Added TD-033 — No default dev environment (partial fix applied with `.env` defaults) |
-| Dec 2025 | Resolved TD-003 — Token encryption complete (AES-256-GCM) |
-| Dec 2025 | Blocked TD-015 — Legal docs drafted, waiting on company formation |
-| Dec 2025 | Resolved TD-018 — Onboarding checklist with progress tracking |
+| Dec 2025 | Resolved TD-003 — Token encryption complete (AES-256-GCM)                            |
+| Dec 2025 | Blocked TD-015 — Legal docs drafted, waiting on company formation                    |
+| Dec 2025 | Resolved TD-018 — Onboarding checklist with progress tracking                        |
+| Dec 2025 | Resolved TD-035, TD-036, TD-037, TD-038 — Security headers, pagination, error classes, audit log |
+| Dec 2025 | Added Dockerfile and docker-compose.yml — TD-033 partial resolution |
+| Dec 2025 | Resolved TD-039 — Historical review auto-post safeguard (isHistorical flag + 7-day max age) |

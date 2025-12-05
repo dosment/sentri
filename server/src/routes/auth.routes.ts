@@ -18,6 +18,7 @@ const registerSchema = z.object({
   password: passwordSchema,
   name: z.string().min(1),
   phone: z.string().optional(),
+  businessType: z.string().optional(),
 });
 
 const loginSchema = z.object({
@@ -38,8 +39,8 @@ router.post('/register', async (req: Request, res: Response, next: NextFunction)
     const result = await authService.register(input);
 
     logger.audit(AuditEvents.AUTH_REGISTER, {
-      dealerId: result.dealer.id,
-      email: result.dealer.email,
+      businessId: result.business.id,
+      email: result.business.email,
       ip,
     });
 
@@ -66,8 +67,8 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
     const result = await authService.login(input);
 
     logger.audit(AuditEvents.AUTH_LOGIN_SUCCESS, {
-      dealerId: result.dealer.id,
-      email: result.dealer.email,
+      businessId: result.business.id,
+      email: result.business.email,
       ip,
     });
 
@@ -88,8 +89,8 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
 
 router.get('/me', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
-    const dealer = await authService.getDealer(req.dealer!.id);
-    res.json(dealer);
+    const business = await authService.getBusiness(req.business!.id);
+    res.json(business);
   } catch (error) {
     next(error);
   }
@@ -97,7 +98,7 @@ router.get('/me', authenticate, async (req: AuthRequest, res: Response, next: Ne
 
 router.get('/onboarding', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
-    const status = await authService.getOnboardingStatus(req.dealer!.id);
+    const status = await authService.getOnboardingStatus(req.business!.id);
     res.json(status);
   } catch (error) {
     next(error);

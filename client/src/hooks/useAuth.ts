@@ -1,17 +1,17 @@
 import { useState, useEffect, useCallback } from 'react'
-import { Dealer, getMe, login as apiLogin, logout as apiLogout, isAuthenticated } from '@/api/auth'
+import { Business, getMe, login as apiLogin, logout as apiLogout, isAuthenticated } from '@/api/auth'
 
 export function useAuth() {
-  const [dealer, setDealer] = useState<Dealer | null>(null)
+  const [business, setBusiness] = useState<Business | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (isAuthenticated()) {
       getMe()
-        .then(setDealer)
+        .then(setBusiness)
         .catch(() => {
           apiLogout()
-          setDealer(null)
+          setBusiness(null)
         })
         .finally(() => setLoading(false))
     } else {
@@ -21,19 +21,19 @@ export function useAuth() {
 
   const login = useCallback(async (email: string, password: string) => {
     const result = await apiLogin(email, password)
-    setDealer(result.dealer)
+    setBusiness(result.business)
     return result
   }, [])
 
   const logout = useCallback(() => {
     apiLogout()
-    setDealer(null)
+    setBusiness(null)
   }, [])
 
   return {
-    dealer,
+    business,
     loading,
-    isAuthenticated: !!dealer,
+    isAuthenticated: !!business,
     login,
     logout,
   }

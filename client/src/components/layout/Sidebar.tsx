@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import {
   HomeIcon,
-  ChartBarIcon,
   Cog6ToothIcon,
   ArrowRightOnRectangleIcon,
   Bars3Icon,
@@ -27,7 +26,6 @@ export function Sidebar({ newReviewCount = 0, onLogout }: SidebarProps) {
 
   const navItems: NavItem[] = [
     { path: '/', label: 'Dashboard', icon: HomeIcon, badge: newReviewCount },
-    { path: '/reports', label: 'Reports', icon: ChartBarIcon },
     { path: '/settings', label: 'Settings', icon: Cog6ToothIcon },
   ]
 

@@ -21,11 +21,11 @@ Sentri is an AI-powered review response automation platform for automotive deale
 
 ### Market Size
 
-| Segment | Count (US) |
-|---------|------------|
-| Franchised new car dealerships | 18,000+ |
-| Independent used car dealers | 40,000+ |
-| Auto service centers | 100,000+ |
+| Segment                         | Count (US) |
+|---------------------------------|------------|
+| Franchised new car dealerships  | 18,000+    |
+| Independent used car dealers    | 40,000+    |
+| Auto service centers            | 100,000+   |
 
 ### Consumer Behavior
 
@@ -36,13 +36,13 @@ Sentri is an AI-powered review response automation platform for automotive deale
 
 ### Review Platform Importance
 
-| Platform | Influence | Our Priority |
-|----------|-----------|--------------|
-| Google Business Profile | #1 for local SEO | MVP |
-| Facebook | 2.9B users, social proof | MVP |
-| DealerRater | #1 automotive-specific (34M/mo) | Phase 2 |
-| Yelp | High consumer trust | Phase 2 |
-| CarGurus | Deal-focused buyers | Phase 3 |
+| Platform                | Influence                           | Our Priority |
+|-------------------------|-------------------------------------|--------------|
+| Google Business Profile | #1 for local SEO                    | MVP          |
+| Facebook                | 2.9B users, social proof            | MVP          |
+| DealerRater             | #1 automotive-specific (34M/mo)     | Phase 2      |
+| Yelp                    | High consumer trust                 | Phase 2      |
+| CarGurus                | Deal-focused buyers                 | Phase 3      |
 
 ### Dealer Pain Points
 
@@ -57,23 +57,23 @@ Sentri is an AI-powered review response automation platform for automotive deale
 
 ### Direct Competitors
 
-| Competitor | Pricing | Strength | Weakness |
-|------------|---------|----------|----------|
-| Podium | $350-600/mo | Full suite | Complex, requires staff |
-| Birdeye | $299-449/mo | Comprehensive | Templated, still needs human |
-| Reputation.com | $500-1,500/mo | Enterprise | Overkill for SMB |
-| Widewail | Custom | Human+AI hybrid | Expensive |
+| Competitor      | Pricing        | Strength         | Weakness                     |
+|-----------------|----------------|------------------|------------------------------|
+| Podium          | $350-600/mo    | Full suite       | Complex, requires staff      |
+| Birdeye         | $299-449/mo    | Comprehensive    | Templated, still needs human |
+| Reputation.com  | $500-1,500/mo  | Enterprise       | Overkill for SMB             |
+| Widewail        | Custom         | Human+AI hybrid  | Expensive                    |
 
 ### Our Differentiation
 
 > **"Sentri is the ONLY review response platform that executes automatically — not just monitors."**
 
-| They Zig | We Zag |
-|----------|--------|
-| Monitor + template | Generate + post |
-| Require daily attention | Set and forget |
-| Feature bloat | One job, done well |
-| Enterprise pricing | SMB-friendly |
+| They Zig                | We Zag             |
+|-------------------------|--------------------|
+| Monitor + template      | Generate + post    |
+| Require daily attention | Set and forget     |
+| Feature bloat           | One job, done well |
+| Enterprise pricing      | SMB-friendly       |
 
 ---
 
@@ -104,33 +104,33 @@ Sentri is an AI-powered review response automation platform for automotive deale
 
 ### Pricing
 
-| Plan | Price | Platforms | Best For |
-|------|-------|-----------|----------|
-| **Starter** | $199/mo | Google + Facebook | Single rooftop |
-| **Professional** | $299/mo | All platforms | Active dealers |
-| **Enterprise** | $499/mo | All + multi-location | Dealer groups |
+| Plan               | Price    | Platforms             | Best For       |
+|--------------------|----------|-----------------------|----------------|
+| **Starter**        | $199/mo  | Google + Facebook     | Single rooftop |
+| **Professional**   | $299/mo  | All platforms         | Active dealers |
+| **Enterprise**     | $499/mo  | All + multi-location  | Dealer groups  |
 
 Annual discount: 15% ($169, $254, $424)
 
 ### Unit Economics
 
-| Metric | Value |
-|--------|-------|
-| CAC (target) | $150-300 |
-| LTV | $2,500-4,000 |
-| LTV:CAC | 10:1+ |
-| Gross Margin | 85%+ |
-| Payback Period | 1-2 months |
+| Metric          | Value         |
+|-----------------|---------------|
+| CAC (target)    | $150-300      |
+| LTV             | $2,500-4,000  |
+| LTV:CAC         | 10:1+         |
+| Gross Margin    | 85%+          |
+| Payback Period  | 1-2 months    |
 
 ### Cost Structure (at scale)
 
-| Item | Monthly Cost |
-|------|--------------|
-| AI API (Gemini) | $200-500 |
-| Infrastructure | $100-200 |
-| Communications | $50-100 |
-| Misc | $50 |
-| **Total** | **$400-850** |
+| Item             | Monthly Cost  |
+|------------------|---------------|
+| AI API (Gemini)  | $200-500      |
+| Infrastructure   | $100-200      |
+| Communications   | $50-100       |
+| Misc             | $50           |
+| **Total**        | **$400-850**  |
 
 At $10K MRR: **91% gross margin**
 
@@ -166,12 +166,12 @@ At $10K MRR: **91% gross margin**
 
 ### Objection Handling
 
-| Objection | Response |
-|-----------|----------|
-| "No time" | "That's why this exists. Zero time after setup." |
-| "AI seems fake" | "Let me show you. [Demo live response]" |
-| "Tried Podium" | "And you're still not responding. We actually execute." |
-| "Too expensive" | "One lost customer costs more than a year of Sentri." |
+| Objection        | Response                                                 |
+|------------------|----------------------------------------------------------|
+| "No time"        | "That's why this exists. Zero time after setup."         |
+| "AI seems fake"  | "Let me show you. [Demo live response]"                  |
+| "Tried Podium"   | "And you're still not responding. We actually execute."  |
+| "Too expensive"  | "One lost customer costs more than a year of Sentri."    |
 
 ---
 
@@ -179,23 +179,23 @@ At $10K MRR: **91% gross margin**
 
 ### Path to $10K MRR
 
-| Month | Dealers | MRR |
-|-------|---------|-----|
-| 1 | 5 | $0 (pilots) |
-| 2 | 10 | $2,200 |
-| 3 | 18 | $4,200 |
-| 4 | 28 | $6,600 |
-| 5 | 38 | $9,000 |
-| 6 | 45 | $10,700 |
+| Month  | Dealers  | MRR          |
+|--------|----------|--------------|
+| 1      | 5        | $0 (pilots)  |
+| 2      | 10       | $2,200       |
+| 3      | 18       | $4,200       |
+| 4      | 28       | $6,600       |
+| 5      | 38       | $9,000       |
+| 6      | 45       | $10,700      |
 
 ### Year 1 Projections
 
-| Quarter | Dealers | MRR | ARR Run Rate |
-|---------|---------|-----|--------------|
-| Q1 | 15 | $3,500 | $42K |
-| Q2 | 45 | $10,500 | $126K |
-| Q3 | 90 | $22,000 | $264K |
-| Q4 | 150 | $38,000 | $456K |
+| Quarter  | Dealers  | MRR      | ARR Run Rate  |
+|----------|----------|----------|---------------|
+| Q1       | 15       | $3,500   | $42K          |
+| Q2       | 45       | $10,500  | $126K         |
+| Q3       | 90       | $22,000  | $264K         |
+| Q4       | 150      | $38,000  | $456K         |
 
 ### Assumptions
 
@@ -207,13 +207,13 @@ At $10K MRR: **91% gross margin**
 
 ## Risk Analysis
 
-| Risk | Probability | Impact | Mitigation |
-|------|-------------|--------|------------|
-| Google API changes | Medium | High | Abstract platform layer |
-| AI generates bad response | Medium | High | Content filtering, human review for negatives |
-| Slow adoption | Medium | High | Free trials, case studies, referrals |
-| Competitor copies | High | Medium | Speed, relationships, continuous improvement |
-| Platform rate limits | Medium | Medium | Backoff logic, partial sync |
+| Risk                       | Probability  | Impact  | Mitigation                                      |
+|----------------------------|--------------|---------|------------------------------------------------|
+| Google API changes         | Medium       | High    | Abstract platform layer                         |
+| AI generates bad response  | Medium       | High    | Content filtering, human review for negatives   |
+| Slow adoption              | Medium       | High    | Free trials, case studies, referrals            |
+| Competitor copies          | High         | Medium  | Speed, relationships, continuous improvement    |
+| Platform rate limits       | Medium       | Medium  | Backoff logic, partial sync                     |
 
 ---
 
@@ -221,20 +221,20 @@ At $10K MRR: **91% gross margin**
 
 ### Product Metrics
 
-| Metric | Target |
-|--------|--------|
-| Response rate (customers) | 95%+ |
-| Time to first response | < 4 hours |
-| AI response approval rate | 80%+ (without edits) |
+| Metric                     | Target                |
+|----------------------------|-----------------------|
+| Response rate (customers)  | 95%+                  |
+| Time to first response     | < 4 hours             |
+| AI response approval rate  | 80%+ (without edits)  |
 
 ### Business Metrics
 
-| Metric | Target |
-|--------|--------|
-| Trial to paid conversion | 40%+ |
-| Monthly churn | < 5% |
-| Referral rate | 30% of new customers |
-| NPS | 50+ |
+| Metric                    | Target                |
+|---------------------------|-----------------------|
+| Trial to paid conversion  | 40%+                  |
+| Monthly churn             | < 5%                  |
+| Referral rate             | 30% of new customers  |
+| NPS                       | 50+                   |
 
 ---
 

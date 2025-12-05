@@ -4,7 +4,7 @@ import { env } from '../config/env.js';
 import { prisma } from '../config/database.js';
 
 export interface AuthRequest extends Request {
-  dealer?: {
+  business?: {
     id: string;
     email: string;
     name: string;
@@ -28,21 +28,21 @@ export async function authenticate(
     const token = authHeader.slice(7);
 
     const payload = jwt.verify(token, env.JWT_SECRET) as {
-      dealerId: string;
+      businessId: string;
       email: string;
     };
 
-    const dealer = await prisma.dealer.findUnique({
-      where: { id: payload.dealerId },
+    const business = await prisma.business.findUnique({
+      where: { id: payload.businessId },
       select: { id: true, email: true, name: true, isAdmin: true },
     });
 
-    if (!dealer) {
-      res.status(401).json({ error: 'Dealer not found' });
+    if (!business) {
+      res.status(401).json({ error: 'Business not found' });
       return;
     }
 
-    req.dealer = dealer;
+    req.business = business;
     next();
   } catch (error) {
     if (error instanceof jwt.JsonWebTokenError) {
